@@ -91,7 +91,7 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         # connections
         self.actionOpen.triggered.connect(self.open_dads)
         self.timeCtrl.sliderMoved.connect(self.slider_moved)
-        self.actionWizard.triggered.connect(self.open_wizard)
+        self.actionDADS_Creator_Wizard.triggered.connect(self.open_wizard)
         self.cameraSelect.currentIndexChanged.connect(self.open_video)
         self.ROStimeBox.textChanged.connect(self.update_time)
 
