@@ -6,6 +6,7 @@ import numpy as np
 import json
 import pandas as pd
 import folium
+import datetime
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import (
@@ -21,20 +22,41 @@ from PyQt5.QtWebChannel import QWebChannel
 
 from pages.design import Ui_MainWindow
 from pages.wizardApp import WizardApp
+from geopy.distance import geodesic
 
 
 file_path = os.path.abspath(__file__)
 dir_path = os.path.dirname(file_path)
 
-import utm
-from math import hypot
 
-def find_closest_time_utm(gps_dict, lat, lon):
-    target_x, target_y, _, _ = utm.from_latlon(lat, lon)
+
+# def find_closest_time_utm(gps_dict, lat, lon):
+#     target_x, target_y, _, _ = utm.from_latlon(lat, lon)
+
+#     def distance_to_target(coord):
+#         x, y, _, _ = utm.from_latlon(coord[0], coord[1])
+#         return np.sqrt((x-target_x)**2 + (y-target_y)**2)
+
+#     closest_time = min(gps_dict, key=lambda t: distance_to_target(gps_dict[t]))
+#     return closest_time
+
+def calculate_trip_distance(gps_dict):
+    # Ensure points are sorted by time
+    sorted_times = sorted(gps_dict.keys())
+    gps_points = [tuple(gps_dict[t]) for t in sorted_times]
+
+    total_km = 0
+    for i in range(len(gps_points) - 1):
+        total_km += geodesic(gps_points[i], gps_points[i + 1]).kilometers
+
+    total_miles = total_km * 0.621371
+    return total_km, total_miles
+
+def find_closest_time_geopy(gps_dict, lat, lon):
+    target_coord = (lat, lon)
 
     def distance_to_target(coord):
-        x, y, _, _ = utm.from_latlon(coord[0], coord[1])
-        return hypot(x - target_x, y - target_y)
+        return geodesic(coord, target_coord).meters
 
     closest_time = min(gps_dict, key=lambda t: distance_to_target(gps_dict[t]))
     return closest_time
@@ -49,6 +71,15 @@ def get_closest(key, dict):
             key_n = min(dict.keys(), key=lambda x: abs(int(x) - int(key)))
             return key_n, dict[key_n]
         
+def format_time(seconds, show_hours=False):
+    hours = int(seconds // 3600)
+    mins = int((seconds % 3600) // 60)
+    secs = int(seconds % 60)
+    if show_hours or hours > 0:
+        return f"{hours:02}:{mins:02}:{secs:02}"
+    else:
+        return f"{mins:02}:{secs:02}"
+        
 class Bridge(QObject):
     def __init__(self, webview, callback=None):
         super().__init__()
@@ -57,7 +88,6 @@ class Bridge(QObject):
 
     @pyqtSlot(float, float)
     def markerMoved(self, lat, lon):
-        # print(f"Marker moved to: {lat}, {lon}")
         if self.callback:
             self.callback(lat, lon)
 
@@ -65,6 +95,11 @@ class Bridge(QObject):
     def update_marker(self, pose):
         js = f"updateMarker({pose[0]}, {pose[1]});"
         self.webview.page().runJavaScript(js)
+
+    @QtCore.pyqtSlot(list)
+    def sendRoute(self, route):
+        pass
+
 class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
         super(MainApp, self).__init__()
@@ -74,6 +109,11 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.sync = {}
 
     def adjustUI(self):
+        self.mapView = QWebEngineView(self.groupBox_2)
+        self.mapView.setGeometry(QtCore.QRect(10, 30, 451, 231))
+        self.mapView.setProperty("url", QtCore.QUrl("about:blank"))
+        self.mapView.setObjectName("mapView")
+
         self.cap = None
         self.total_frames = 0
         self.fps = 15
@@ -82,11 +122,20 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.timer = QTimer()
         self.timer.timeout.connect(self.next_frame)
 
-        # play but
+        # buttons
         self.setBut(self.playBut, 'play')
         self.playBut.setEnabled(False)
-        self.playBut.clicked.connect(self.play_pause_video)
         self.playing = False
+        self.setBut(self.ejectBut, 'eject')
+        self.setBut(self.beginningBut, 'begining')
+        self.setBut(self.rewindBut, 'rewind')
+        self.setBut(self.skipBut, 'forward')
+        self.setBut(self.endBut, 'end')
+        self.beginningBut.setEnabled(False)
+        self.rewindBut.setEnabled(False)
+        self.skipBut.setEnabled(False)
+        self.endBut.setEnabled(False)
+        
 
         # connections
         self.actionOpen.triggered.connect(self.open_dads)
@@ -94,7 +143,11 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionDADS_Creator_Wizard.triggered.connect(self.open_wizard)
         self.cameraSelect.currentIndexChanged.connect(self.open_video)
         self.ROStimeBox.textChanged.connect(self.update_time)
+        self.playBut.clicked.connect(self.play_pause_video)
+        self.ejectBut.clicked.connect(self.open_dads)
 
+        
+    # handles
     def setBut(self, obj, icon):
         root, ext = os.path.splitext(icon)
         if ext == "":
@@ -106,10 +159,12 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         icon_file = os.path.join(dir_path, 'icons', icon)
         obj.setText("")
         obj.setIcon(QtGui.QIcon(icon_file))
-    
+
+    #video controls    
     def open_video(self):
         file_path = os.path.join(self.main_dict['dir'], self.cameraSelect.currentText())
         self.cap = cv2.VideoCapture(file_path)
+        ref_time = self.ROStimeBox.toPlainText()
         if self.cap.isOpened():
             self.total_frames = int(self.cap.get(cv2.CAP_PROP_FRAME_COUNT))
             self.fps = self.cap.get(cv2.CAP_PROP_FPS) or 30
@@ -121,30 +176,22 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
             self.playing = True
             self.timer.start(int(1000 / self.fps))
+            self.play_pause_video()
             for topic in self.main_dict['topics'].keys():
                 if topic in self.cameraSelect.currentText():
-                    self.sync['C'] = self.sync[topic]
+                    self.sync['current'] = self.sync[topic]
+                    rev = {}
+                    for key in self.sync['current'].keys():
+                        rev[self.sync['current'][key]] = key
+                    self.sync['rev'] = rev
                     break
+        if ref_time != '':
+            self.slider_moved(get_closest(ref_time, self.sync['rev'])[1])
+
     def update_cam_select(self):
         self.cameraSelect.clear()
         for i in range(len(self.main_dict['video'])):
             self.cameraSelect.addItem(self.main_dict['video'][i])
-    
-    def update_marker(self, lat, lon):
-        new = find_closest_time_utm(self.gps, lat, lon)
-        self.ROStimeBox.setText(str(new))
-        new_frame = find_closest_frame(self.sync['C'], new)
-        self.slider_moved(int(new_frame))
-
-    def open_map(self):
-        # file_path = os.path.join(self.main_dict['dir'], self.main_dict['map'])
-        file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "map.html"))
-        self.mapView.setUrl(QtCore.QUrl.fromLocalFile(file_path))
-
-        self.channel = QWebChannel()
-        self.bridge = Bridge(self.mapView, self.update_marker)
-        self.channel.registerObject('bridge', self.bridge)
-        self.mapView.page().setWebChannel(self.channel)
 
     def open_camera_sync(self):
         self.sync = {}
@@ -155,42 +202,7 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
                     for key in self.main_dict['topics'][topic]:
                         data = pd.read_csv(os.path.join(self.main_dict['dir'], 'csv', key + '.' + topic))
                         for i in range(len(data)):
-                            self.sync[topic][data['seq'][i]] = data['time'][i]
-    
-    def open_gps(self):
-        self.gps = {}
-        for file in self.main_dict['topics']['gps']:
-            file_path = os.path.join(self.main_dict['dir'], 'csv', file + '.gps')
-            data = pd.read_csv(file_path)
-            for i in range(len(data)):
-                self.gps[int(data['time'][i])] = [float(data['latitude'][i]), float(data['longitude'][i])]
-
-    
-    def update_time(self):
-        try:
-            self.NOW = int(self.ROStimeBox.toPlainText())
-            self.bridge.update_marker(get_closest(self.NOW, self.gps)[1])  
-        except:
-            self.NOW = -1
-    
-    def load(self):
-        self.open_camera_sync()
-        self.open_gps()
-        self.update_cam_select()
-        self.open_video()
-        self.open_map()
-        
-    def open_dads(self):
-        file_dialog = QFileDialog()
-        file_path, _ = file_dialog.getOpenFileName(caption="Open DADS File", filter="Trip Files (*.DADS)")
-        if file_path == "":
-            return
-        dir_name = os.path.dirname(file_path)
-        self.main_dict = {}
-        with open(file_path, 'r') as f:
-            self.main_dict = json.load(f)
-        self.main_dict['dir'] = dir_name
-        self.load()
+                            self.sync[topic][int(data['seq'][i])] = int(data['time'][i])
 
     def play_pause_video(self):
             if self.playing:
@@ -229,10 +241,15 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.cameaDisplay.setPixmap(pixmap)
 
         frame_id = int(self.cap.get(cv2.CAP_PROP_POS_FRAMES))
-        if frame_id in self.sync['C'].keys():
-            self.ROStimeBox.setText(str(self.sync['C'][frame_id]))
+        if frame_id in self.sync['current'].keys():
+            self.ROStimeBox.setText(str(self.sync['current'][frame_id]))
         else:
             self.ROStimeBox.setText('')
+        passed_time_sec = frame_id / self.fps
+        remaining_time_sec = (self.total_frames - frame_id) / self.fps
+        self.pasTime.setText(format_time(passed_time_sec))
+        self.remTime.setText(format_time(remaining_time_sec))
+
 
     def slider_moved(self, position):
         if self.cap:
@@ -243,6 +260,83 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.display_frame(frame)
             if self.playing:
                 self.timer.start(int(1000 / self.fps))
+
+
+    ## MAP Control
+    def update_marker(self, lat, lon):
+        new = find_closest_time_geopy(self.gps, lat, lon)
+        self.ROStimeBox.setText(str(new))
+        new_frame = get_closest(str(new), self.sync['rev'])[1]
+        self.slider_moved(int(new_frame))
+
+    def open_map(self):
+        file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "map.html"))
+        self.mapView.setUrl(QtCore.QUrl.fromLocalFile(file_path))
+
+        self.channel = QWebChannel()
+        self.bridge = Bridge(self.mapView, self.update_marker)
+        self.channel.registerObject('bridge', self.bridge)
+        self.mapView.page().setWebChannel(self.channel)
+
+        route = [[lat, lon] for lat, lon in self.gps.values()]
+        js_array = str(route).replace("'", "")  # Simple conversion to JS array format
+
+        js = f"setRoute({js_array});"
+        QTimer.singleShot(1000, lambda: self.mapView.page().runJavaScript(js))
+    
+    def open_gps(self):
+        self.gps = {}
+        for file in self.main_dict['topics']['pos']:
+            file_path = os.path.join(self.main_dict['dir'], 'csv', file + '.pos')
+            data = pd.read_csv(file_path)
+            for i in range(len(data)):
+                self.gps[int(data['time'][i])] = [float(data['lat'][i]), float(data['lon'][i])]
+
+    #### General    
+    def update_time(self):
+        try:
+            self.NOW = int(self.ROStimeBox.toPlainText())
+            self.bridge.update_marker(get_closest(self.NOW, self.gps)[1])  
+        except:
+            self.NOW = -1
+
+    def extract_info(self):
+        if 'info' in self.main_dict.keys():
+            return
+        time_array = np.array([float(key) for key in self.gps.keys()])
+        time_array = time_array/1e9
+        info = {}
+        starting_time = datetime.datetime.fromtimestamp(np.min(time_array))
+        info['starting time'] = starting_time
+        info['trip duration (s)'] = str(int(np.max(time_array)-np.min(time_array)))
+        info['trip duration'] = format_time(int(time_array[-1]-time_array[0]))
+        info['traveled distance (Km, mi)'] = calculate_trip_distance(self.gps)
+
+
+
+        for key in info.keys():
+            self.infoL.addItem(f'{key}: {info[key]}')
+        
+    
+    def load(self):
+        self.open_camera_sync()
+        self.open_gps()
+        self.update_cam_select()
+        self.open_video()
+        self.open_map()
+        self.extract_info()
+        
+    def open_dads(self):
+        file_dialog = QFileDialog()
+        file_path, _ = file_dialog.getOpenFileName(caption="Open DADS File", filter="Trip Files (*.DADS)")
+        if file_path == "":
+            return
+        dir_name = os.path.dirname(file_path)
+        self.main_dict = {}
+        with open(file_path, 'r') as f:
+            self.main_dict = json.load(f)
+        self.main_dict['dir'] = dir_name
+        self.load()
 
     def open_wizard(self):
         self.wizard_window = WizardApp(parent=self)

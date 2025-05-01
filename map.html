@@ -20,6 +20,8 @@
     }).addTo(map);
 
     let marker = L.marker([0, 0], { draggable: true }).addTo(map);
+    let route = [];
+    let routeLine;
 
     new QWebChannel(qt.webChannelTransport, function(channel) {
       window.bridge = channel.objects.bridge;
@@ -28,6 +30,16 @@
     function updateMarker(lat, lon) {
       marker.setLatLng([lat, lon]);
       map.panTo([lat, lon]);
+    }
+
+    function setRoute(coords) {
+      if (route.length > 0) {
+        map.removeLayer(routeLine);  // Remove previous line if needed
+      }
+
+      route = coords.map(coord => [coord[0], coord[1]]);  // Ensure it's [lat, lon]
+      routeLine = L.polyline(route, { color: 'blue', weight: 4 }).addTo(map);
+      map.fitBounds(routeLine.getBounds());
     }
 
     marker.on("dragend", function (e) {

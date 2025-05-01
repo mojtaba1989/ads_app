@@ -1,4 +1,4 @@
-actionlib==1.12.1
+# actionlib==1.12.1
 angles==1.9.12
 autoware_camera_lidar_calibrator==1.12.0
 autoware_launcher==1.12.0

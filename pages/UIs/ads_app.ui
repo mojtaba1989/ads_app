@@ -35,9 +35,9 @@
     <widget class="QSlider" name="timeCtrl">
      <property name="geometry">
       <rect>
-       <x>80</x>
+       <x>40</x>
        <y>30</y>
-       <width>1461</width>
+       <width>1541</width>
        <height>22</height>
       </rect>
      </property>
@@ -48,14 +48,14 @@
     <widget class="QLabel" name="remTime">
      <property name="geometry">
       <rect>
-       <x>1550</x>
+       <x>1590</x>
        <y>30</y>
-       <width>67</width>
+       <width>31</width>
        <height>17</height>
       </rect>
      </property>
      <property name="text">
-      <string>TextLabel</string>
+      <string>xx:xx</string>
      </property>
     </widget>
     <widget class="QLabel" name="pasTime">
@@ -63,12 +63,12 @@
       <rect>
        <x>10</x>
        <y>30</y>
-       <width>67</width>
+       <width>31</width>
        <height>17</height>
       </rect>
      </property>
      <property name="text">
-      <string/>
+      <string>xx:xx</string>
      </property>
     </widget>
     <widget class="QTextBrowser" name="ROStimeBox">
@@ -117,7 +117,7 @@
       <string>Go To</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pauseBut">
+    <widget class="QPushButton" name="rewindBut">
      <property name="geometry">
       <rect>
        <x>1401</x>
@@ -130,7 +130,7 @@
       <string>Play</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="rewindBut">
+    <widget class="QPushButton" name="beginningBut">
      <property name="geometry">
       <rect>
        <x>1347</x>
@@ -169,7 +169,7 @@
       <string>Play</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="begginingBut">
+    <widget class="QPushButton" name="ejectBut">
      <property name="geometry">
       <rect>
        <x>1292</x>
@@ -263,10 +263,10 @@
     <widget class="QListWidget" name="infoL">
      <property name="geometry">
       <rect>
-       <x>0</x>
+       <x>10</x>
        <y>20</y>
-       <width>661</width>
-       <height>61</height>
+       <width>641</width>
+       <height>51</height>
       </rect>
      </property>
     </widget>
@@ -283,19 +283,17 @@
     <property name="title">
      <string>Map</string>
     </property>
-    <widget class="QWebView" name="mapView">
+    <widget class="QLabel" name="mapView">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>30</y>
-       <width>451</width>
-       <height>231</height>
+       <x>16</x>
+       <y>12</y>
+       <width>441</width>
+       <height>251</height>
       </rect>
      </property>
-     <property name="url">
-      <url>
-       <string>about:blank</string>
-      </url>
+     <property name="text">
+      <string/>
      </property>
     </widget>
    </widget>
@@ -311,6 +309,55 @@
     <property name="title">
      <string>Scenario Selection/Modification</string>
     </property>
+    <widget class="QPushButton" name="scenAddB">
+     <property name="geometry">
+      <rect>
+       <x>390</x>
+       <y>20</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Add</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="scenRemoveB">
+     <property name="geometry">
+      <rect>
+       <x>390</x>
+       <y>50</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Remove</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="scenEditB">
+     <property name="geometry">
+      <rect>
+       <x>390</x>
+       <y>80</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Edit</string>
+     </property>
+    </widget>
+    <widget class="QListWidget" name="scenList">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>371</width>
+       <height>241</height>
+      </rect>
+     </property>
+    </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_4">
     <property name="geometry">
@@ -337,14 +384,17 @@
     <property name="title">
      <string>Plots</string>
     </property>
-    <widget class="QwtPlot" name="speedPlt">
+    <widget class="QLabel" name="speedplt">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>20</x>
        <y>30</y>
-       <width>451</width>
-       <height>141</height>
+       <width>441</width>
+       <height>161</height>
       </rect>
+     </property>
+     <property name="text">
+      <string/>
      </property>
     </widget>
    </widget>
@@ -355,7 +405,7 @@
      <x>0</x>
      <y>0</y>
      <width>1648</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -426,18 +476,6 @@
    </property>
   </action>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>QWebView</class>
-   <extends>QWidget</extends>
-   <header>QtWebKitWidgets/QWebView</header>
-  </customwidget>
-  <customwidget>
-   <class>QwtPlot</class>
-   <extends>QFrame</extends>
-   <header>qwt_plot.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>
