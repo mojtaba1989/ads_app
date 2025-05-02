@@ -1,0 +1,39 @@
+{
+    "reference_scenarios": [
+        "Detect and Respond to Speed Limit Changes and Speed Advisories",
+        "Perform High-Speed Merge (e.g., Freeway)",
+        "Perform Low-Speed Merge",
+        "Move Out of the Travel Lane and Park",
+        "Detect and Respond to Encroaching Oncoming Vehicles",
+        "Detect Passing & No Passing Zones and Perform Passing Maneuvers",
+        "Perform Car Following (Including Stop and Go)",
+        "Detect and Respond to Stopped Vehicles",
+        "Detect and Respond to Lane Changes",
+        "Detect and Respond to Static Obstacles in the Path of the Vehicle",
+        "Detect Traffic Signals & Stop/Yield Signs",
+        "Respond to Traffic Signals & Stop/Yield Signs",
+        "Provide Safe Distance from Vehicles, Pedestrians, and Bicyclists on the Side of the Road",
+        "Road Edge Departure or near departures with and w/o Prior Vehicle Maneuver",
+        "Turning movements (protected left, left, right, or straight)"
+    ],
+    "conditions": [
+        "4 Way Intersection",
+        "3 Way Intersection",
+        "Freeway Ramps",
+        "Signal Control",
+        "Stop Control",
+        "Roundabouts",
+        "Rural locations",
+        "Urban locations",
+        "High-Speed Arterial",
+        "High-Speed Suburban Arterial",
+        "Rural, High-Speed Suburban Multilane Highway",
+        "Divided Freeway/Highways",
+        "Vertical Curves",
+        "Animal Crash or near miss with Prior Vehicle Maneuver",
+        "Horizontal Curves",
+        "Animal Crash or near miss without Prior Vehicle Maneuver",
+        "Weather (raining / snowing / fog)",
+        "Lighting (day, night, dusk, lighted)"
+    ]
+}

@@ -7,6 +7,7 @@ import json
 import pandas as pd
 import folium
 import datetime
+from geopy.distance import geodesic
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import (
@@ -22,7 +23,9 @@ from PyQt5.QtWebChannel import QWebChannel
 
 from pages.design import Ui_MainWindow
 from pages.wizardApp import WizardApp
-from geopy.distance import geodesic
+from pages.videoProcessApp import VideoApp
+from pages.scenarioApp import ScenarioApp
+
 
 
 file_path = os.path.abspath(__file__)
@@ -135,6 +138,10 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.rewindBut.setEnabled(False)
         self.skipBut.setEnabled(False)
         self.endBut.setEnabled(False)
+
+        self.scenAddB.setEnabled(False)
+        self.scenEditB.setEnabled(False)
+        self.scenRemoveB.setEnabled(False)
         
 
         # connections
@@ -144,7 +151,17 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.cameraSelect.currentIndexChanged.connect(self.open_video)
         self.ROStimeBox.textChanged.connect(self.update_time)
         self.playBut.clicked.connect(self.play_pause_video)
+        self.skipBut.pressed.connect(self.forward_press)
+        self.skipBut.released.connect(self.forward_release)
         self.ejectBut.clicked.connect(self.open_dads)
+        self.scenAddB.clicked.connect(self.open_scenario_app)
+        self.scenEditB.clicked.connect(self.edit_scenario)
+        self.scenGoToB.clicked.connect(self.goto_scenario)
+        self.scenRemoveB.clicked.connect(self.remove_scenario)
+        self.scenList.itemDoubleClicked.connect(self.goto_scenario)
+        self.actionSave.triggered.connect(self.save_dads)
+        self.actionSave_As.triggered.connect(self.save_as_dads)
+
 
         
     # handles
@@ -162,7 +179,7 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
     #video controls    
     def open_video(self):
-        file_path = os.path.join(self.main_dict['dir'], self.cameraSelect.currentText())
+        file_path = os.path.join(self.main_dict['pwd'], self.cameraSelect.currentText())
         self.cap = cv2.VideoCapture(file_path)
         ref_time = self.ROStimeBox.toPlainText()
         if self.cap.isOpened():
@@ -172,6 +189,7 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
             self.timeCtrl.setMaximum(self.total_frames)
             self.timeCtrl.setEnabled(True)
             self.playBut.setEnabled(True)
+            self.skipBut.setEnabled(True)
             self.setBut(self.playBut, 'pause')
 
             self.playing = True
@@ -200,7 +218,7 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
                 if topic in video:
                     self.sync[topic] = {}
                     for key in self.main_dict['topics'][topic]:
-                        data = pd.read_csv(os.path.join(self.main_dict['dir'], 'csv', key + '.' + topic))
+                        data = pd.read_csv(os.path.join(self.main_dict['pwd'], 'csv', key + '.' + topic))
                         for i in range(len(data)):
                             self.sync[topic][int(data['seq'][i])] = int(data['time'][i])
 
@@ -261,6 +279,15 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
             if self.playing:
                 self.timer.start(int(1000 / self.fps))
 
+    def forward_press(self):
+        if self.playing:
+            self.playing = True
+            self.timer.start(int(1000 / self.fps / 2))
+    def forward_release(self):
+        if self.playing:
+            self.playing = True
+            self.timer.start(int(1000 / self.fps))
+
 
     ## MAP Control
     def update_marker(self, lat, lon):
@@ -282,40 +309,145 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         js_array = str(route).replace("'", "")  # Simple conversion to JS array format
 
         js = f"setRoute({js_array});"
-        QTimer.singleShot(1000, lambda: self.mapView.page().runJavaScript(js))
+        QTimer.singleShot(2000, lambda: self.mapView.page().runJavaScript(js))
     
     def open_gps(self):
         self.gps = {}
         for file in self.main_dict['topics']['pos']:
-            file_path = os.path.join(self.main_dict['dir'], 'csv', file + '.pos')
+            file_path = os.path.join(self.main_dict['pwd'], 'csv', file + '.pos')
             data = pd.read_csv(file_path)
             for i in range(len(data)):
                 self.gps[int(data['time'][i])] = [float(data['lat'][i]), float(data['lon'][i])]
 
-    #### General    
+
+    # Scenario Control
+    def load_scenarios(self):
+        self.scenList.clear()
+        self.clean_up_scenarios()
+        for key in self.main_dict['scenarios'].keys():
+            tmp = self.main_dict['scenarios'][key]
+            self.scenList.addItem(f'{tmp[0]}, {tmp[2]}: {tmp[1]}')
+        if 'additional_scenarios' not in self.main_dict.keys():
+            self.main_dict['additional_scenarios'] = []          
+    
+    def open_scenario_app(self):
+        if self.NOW == -1:
+            return
+        self.scenario_app = ScenarioApp(time_now=self.NOW,
+                                         callback=self.add_from_scenario_app,
+                                         additional=self.main_dict['additional_scenarios'])
+        self.scenario_app.show()
+
+    def add_from_scenario_app(self, time, scenario, add_scenario=None):
+        if add_scenario is not None and add_scenario not in self.main_dict['additional_scenarios']:
+            self.main_dict['additional_scenarios'].append(add_scenario)
+        time_p = datetime.datetime.fromtimestamp(float(time)/1e9).strftime('%H:%M:%S.%f')[:-3]
+        id = self.scenList.count() + 1
+        self.main_dict['scenarios'][time] = (id, scenario, time_p)  # time, scenario
+        self.clean_up_scenarios()
+        self.scenList.clear()
+        for key in self.main_dict['scenarios'].keys():
+            tmp = self.main_dict['scenarios'][key]
+            self.scenList.addItem(f'{tmp[0]}, {tmp[2]}: {tmp[1]}')
+
+    def edit_scenario(self):
+        id = self.scenList.currentRow()+1
+        for key in self.main_dict['scenarios'].keys():
+            tmp = self.main_dict['scenarios'][key]
+            if tmp[0] == id:
+                self.scenario_app = ScenarioApp(time_now=key,
+                                                scenario=tmp[1],
+                                                callback=self.add_from_scenario_app,
+                                                additional=self.main_dict['additional_scenarios'])
+                self.scenario_app.show()
+    
+    def remove_scenario(self):
+        id = self.scenList.currentRow()+1
+        for key in self.main_dict['scenarios'].keys():
+            tmp = self.main_dict['scenarios'][key]
+            if tmp[0] == id:
+                del self.main_dict['scenarios'][key]
+                self.clean_up_scenarios()
+                self.scenList.clear()
+                break
+        for key in self.main_dict['scenarios'].keys():
+            tmp = self.main_dict['scenarios'][key]
+            self.scenList.addItem(f'{tmp[0]}, {tmp[2]}: {tmp[1]}')
+
+
+    def goto_scenario(self):
+        id = self.scenList.currentRow()+1
+        for key in self.main_dict['scenarios'].keys():
+            tmp = self.main_dict['scenarios'][key]
+            if tmp[0] == id:
+                self.ROStimeBox.setText(str(key))
+                new_frame = get_closest(str(key), self.sync['rev'])[1]
+                self.slider_moved(int(new_frame))
+                return
+
+    def clean_up_scenarios(self):
+        tmp = self.main_dict['scenarios']
+        self.main_dict['scenarios'] = {}
+        time_list = list(tmp.keys())
+        time_list.sort()
+        for id, time in enumerate(time_list):
+            self.main_dict['scenarios'][time] = (id+1, tmp[time][1], tmp[time][2])
+
+
+
+    #### General  
+    def refresh(self):
+        if self.playing:
+            self.play_pause_video()
+        
+        try:
+            self.cap.release()
+        except:
+            pass
+        self.timer.stop()
+        self.cap = None
+        self.total_frames = 0
+
+        self.playBut.setEnabled(False)
+        self.setBut(self.playBut, 'play')
+        self.timeCtrl.blockSignals(True)
+        self.timeCtrl.setValue(0)
+        self.timeCtrl.blockSignals(False)
+        self.cameraSelect.clear()
+        
+        self.scenList.clear()
+        self.ROStimeBox.setText('')
+        self.DTBox.setText('')
+        self.NOW = -1
+        self.FILENAME = ''
+        self.main_dict = {}
+        self.sync = {}
+        self.gps = {}
+
+      
     def update_time(self):
         try:
             self.NOW = int(self.ROStimeBox.toPlainText())
-            self.bridge.update_marker(get_closest(self.NOW, self.gps)[1])  
+            self.DTBox.setText(str(datetime.datetime.fromtimestamp(float(self.NOW)/1e9)))
+            self.bridge.update_marker(get_closest(self.NOW, self.gps)[1])
         except:
             self.NOW = -1
 
     def extract_info(self):
-        if 'info' in self.main_dict.keys():
-            return
-        time_array = np.array([float(key) for key in self.gps.keys()])
-        time_array = time_array/1e9
-        info = {}
-        starting_time = datetime.datetime.fromtimestamp(np.min(time_array))
-        info['starting time'] = starting_time
-        info['trip duration (s)'] = str(int(np.max(time_array)-np.min(time_array)))
-        info['trip duration'] = format_time(int(time_array[-1]-time_array[0]))
-        info['traveled distance (Km, mi)'] = calculate_trip_distance(self.gps)
-
-
-
-        for key in info.keys():
-            self.infoL.addItem(f'{key}: {info[key]}')
+        if not 'info' in self.main_dict.keys():
+            time_array = np.array([float(key) for key in self.gps.keys()])
+            time_array = time_array/1e9
+            info = {}
+            starting_time = datetime.datetime.fromtimestamp(np.min(time_array))
+            info['starting time'] = str(starting_time)
+            info['trip duration (s)'] = str(int(np.max(time_array)-np.min(time_array)))
+            info['trip duration'] = format_time(int(time_array[-1]-time_array[0]))
+            info['traveled distance Km'] = f'{calculate_trip_distance(self.gps)[0]:.2f}'
+            info['traveled distance mi'] = f'{calculate_trip_distance(self.gps)[1]:.2f}'
+            self.main_dict['info'] = info
+        for key in self.main_dict['info'].keys():
+            description = self.main_dict['info'][key]
+            self.infoL.addItem(f'{key}: {description}')
         
     
     def load(self):
@@ -325,18 +457,41 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.open_video()
         self.open_map()
         self.extract_info()
+        self.load_scenarios()
+
+    def unlockBut(self):
+        self.scenAddB.setEnabled(True)
+        self.scenEditB.setEnabled(True)
+        self.scenRemoveB.setEnabled(True)
         
     def open_dads(self):
+        self.refresh()
         file_dialog = QFileDialog()
         file_path, _ = file_dialog.getOpenFileName(caption="Open DADS File", filter="Trip Files (*.DADS)")
         if file_path == "":
             return
         dir_name = os.path.dirname(file_path)
+        self.FILENAME = file_path
         self.main_dict = {}
         with open(file_path, 'r') as f:
             self.main_dict = json.load(f)
-        self.main_dict['dir'] = dir_name
+        self.main_dict['pwd'] = dir_name
+        if 'scenarios' not in self.main_dict.keys():
+            self.main_dict['scenarios'] = {}
         self.load()
+        self.unlockBut()
+
+    def save_dads(self):
+        with open(self.FILENAME, 'w') as f:
+            json.dump(self.main_dict, f, indent=4)
+
+    def save_as_dads(self):
+        file_dialog = QFileDialog()
+        file_path, _ = file_dialog.getSaveFileName(caption="Save File", filter="Trip Files (*.DADS)")
+        if file_path == "":
+            return
+        self.FILENAME = file_path
+        self.save_dads()
 
     def open_wizard(self):
         self.wizard_window = WizardApp(parent=self)

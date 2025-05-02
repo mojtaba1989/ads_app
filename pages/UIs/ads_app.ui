@@ -75,9 +75,9 @@
      <property name="geometry">
       <rect>
        <x>80</x>
-       <y>60</y>
+       <y>70</y>
        <width>171</width>
-       <height>31</height>
+       <height>21</height>
       </rect>
      </property>
     </widget>
@@ -87,34 +87,34 @@
        <x>10</x>
        <y>70</y>
        <width>67</width>
-       <height>17</height>
+       <height>21</height>
       </rect>
      </property>
      <property name="text">
       <string>ROS Time</string>
      </property>
     </widget>
-    <widget class="QTextBrowser" name="gotoBox">
+    <widget class="QTextBrowser" name="DTBox">
      <property name="geometry">
       <rect>
-       <x>350</x>
-       <y>60</y>
-       <width>171</width>
-       <height>31</height>
+       <x>380</x>
+       <y>70</y>
+       <width>251</width>
+       <height>21</height>
       </rect>
      </property>
     </widget>
     <widget class="QLabel" name="label_3">
      <property name="geometry">
       <rect>
-       <x>300</x>
+       <x>270</x>
        <y>70</y>
-       <width>41</width>
-       <height>17</height>
+       <width>101</width>
+       <height>20</height>
       </rect>
      </property>
      <property name="text">
-      <string>Go To</string>
+      <string>Date and Time</string>
      </property>
     </widget>
     <widget class="QPushButton" name="rewindBut">
@@ -264,9 +264,9 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>20</y>
+       <y>30</y>
        <width>641</width>
-       <height>51</height>
+       <height>41</height>
       </rect>
      </property>
     </widget>
@@ -286,9 +286,9 @@
     <widget class="QLabel" name="mapView">
      <property name="geometry">
       <rect>
-       <x>16</x>
-       <y>12</y>
-       <width>441</width>
+       <x>6</x>
+       <y>22</y>
+       <width>461</width>
        <height>251</height>
       </rect>
      </property>
@@ -313,7 +313,7 @@
      <property name="geometry">
       <rect>
        <x>390</x>
-       <y>20</y>
+       <y>30</y>
        <width>75</width>
        <height>23</height>
       </rect>
@@ -326,7 +326,7 @@
      <property name="geometry">
       <rect>
        <x>390</x>
-       <y>50</y>
+       <y>60</y>
        <width>75</width>
        <height>23</height>
       </rect>
@@ -339,7 +339,7 @@
      <property name="geometry">
       <rect>
        <x>390</x>
-       <y>80</y>
+       <y>90</y>
        <width>75</width>
        <height>23</height>
       </rect>
@@ -352,10 +352,36 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>20</y>
+       <y>30</y>
        <width>371</width>
-       <height>241</height>
+       <height>231</height>
       </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="scenImportB">
+     <property name="geometry">
+      <rect>
+       <x>390</x>
+       <y>120</y>
+       <width>75</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Import</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="scenGoToB">
+     <property name="geometry">
+      <rect>
+       <x>390</x>
+       <y>230</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>GoTo</string>
      </property>
     </widget>
    </widget>
@@ -405,7 +431,7 @@
      <x>0</x>
      <y>0</y>
      <width>1648</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -413,11 +439,15 @@
      <string>Fi&amp;le</string>
     </property>
     <addaction name="actionOpen"/>
+    <addaction name="actionSave"/>
+    <addaction name="actionSave_As"/>
+    <addaction name="actionExport"/>
+    <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
-     <string>T&amp;ools</string>
+     <string>&amp;Tools</string>
     </property>
     <addaction name="actionDADS_Creator_Wizard"/>
     <addaction name="actionImage_processing"/>
@@ -473,6 +503,21 @@
   <action name="actionExit">
    <property name="text">
     <string>&amp;Exit</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>&amp;Save</string>
+   </property>
+  </action>
+  <action name="actionSave_As">
+   <property name="text">
+    <string>Sa&amp;ve As</string>
+   </property>
+  </action>
+  <action name="actionExport">
+   <property name="text">
+    <string>E&amp;xport</string>
    </property>
   </action>
  </widget>
