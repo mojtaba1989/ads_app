@@ -21,6 +21,10 @@ from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtCore import QObject, pyqtSlot, QUrl
 from PyQt5.QtWebChannel import QWebChannel
 
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt5 import NavigationToolbar2QT as NavigationToolbar
+from matplotlib.figure import Figure
+
 from pages.design import Ui_MainWindow
 from pages.wizardApp import WizardApp
 from pages.videoProcessApp import VideoApp
@@ -103,6 +107,26 @@ class Bridge(QObject):
     def sendRoute(self, route):
         pass
 
+class PlotWidget(QtWidgets.QWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+        self.figure = Figure(figsize=(5, 3))
+        self.canvas = FigureCanvas(self.figure)
+        layout = QtWidgets.QVBoxLayout()
+        layout.addWidget(self.canvas)
+        self.setLayout(layout)
+
+        self.plot()
+
+    def plot(self):
+        ax = self.figure.add_subplot(111)
+        x = np.linspace(0, 10, 100)
+        y = np.sin(x + np.random.rand())
+        ax.plot(x, y)
+        ax.set_title("Plot")
+        self.canvas.draw()
+
 class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
         super(MainApp, self).__init__()
@@ -115,6 +139,13 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.mapView = QWebEngineView(self.groupBox_2)
         self.mapView.setObjectName("mapView")
         self.gridLayout_5.addWidget(self.mapView, 0, 0, 1, 1)
+
+        self.scrollLayout = QtWidgets.QVBoxLayout(self.plotContents)
+        self.scrollLayout.setContentsMargins(0, 0, 0, 0)
+        self.scrollLayout.setSpacing(10)
+
+        for _ in range(5):
+            self.add_plot()
 
         self.cap = None
         self.total_frames = 0
@@ -138,9 +169,7 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.skipBut.setEnabled(False)
         self.endBut.setEnabled(False)
 
-        self.scenAddB.setEnabled(False)
-        self.scenEditB.setEnabled(False)
-        self.scenRemoveB.setEnabled(False)
+        self.unlockBut(False)
         
 
         # connections
@@ -161,7 +190,19 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionSave.triggered.connect(self.save_dads)
         self.actionSave_As.triggered.connect(self.save_as_dads)
 
+    def add_plot(self):
+        fig = Figure(figsize=(5, 3))
+        canvas = FigureCanvas(fig)
+        canvas.setMinimumHeight(200)  # Force consistent height per plot
+        canvas.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
+        ax = fig.add_subplot(111)
 
+        x = np.linspace(0, 10, 100)
+        y = np.sin(x + np.random.rand())
+        ax.plot(x, y)
+        ax.set_title("Sample Plot")
+
+        self.scrollLayout.addWidget(canvas)
         
     # handles
     def setBut(self, obj, icon):
@@ -175,6 +216,8 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         icon_file = os.path.join(dir_path, 'icons', icon)
         obj.setText("")
         obj.setIcon(QtGui.QIcon(icon_file))
+    
+    # Plots
 
     #video controls    
     def open_video(self):
@@ -270,6 +313,9 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def slider_moved(self, position):
         if self.cap:
+            self.timeCtrl.blockSignals(True)
+            self.timeCtrl.setValue(position)
+            self.timeCtrl.blockSignals(False)
             self.timer.stop()
             self.cap.set(cv2.CAP_PROP_POS_FRAMES, position)
             ret, frame = self.cap.read()
@@ -277,6 +323,7 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.display_frame(frame)
             if self.playing:
                 self.timer.start(int(1000 / self.fps))
+            
 
     def forward_press(self):
         if self.playing:
@@ -457,11 +504,14 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.open_map()
         self.extract_info()
         self.load_scenarios()
+        self.plot()
 
-    def unlockBut(self):
-        self.scenAddB.setEnabled(True)
-        self.scenEditB.setEnabled(True)
-        self.scenRemoveB.setEnabled(True)
+    def unlockBut(self, lock=False):
+        self.scenAddB.setEnabled(lock)
+        self.scenEditB.setEnabled(lock)
+        self.scenRemoveB.setEnabled(lock)
+        self.scenGoToB.setEnabled(lock)
+        self.scenImportB.setEnabled(lock)
         
     def open_dads(self):
         self.refresh()
@@ -478,7 +528,7 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         if 'scenarios' not in self.main_dict.keys():
             self.main_dict['scenarios'] = {}
         self.load()
-        self.unlockBut()
+        self.unlockBut(True)
 
     def save_dads(self):
         with open(self.FILENAME, 'w') as f:

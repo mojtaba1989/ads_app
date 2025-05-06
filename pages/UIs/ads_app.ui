@@ -98,10 +98,29 @@
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_5">
         <item>
-         <widget class="QLabel" name="speedplt">
-          <property name="text">
-           <string/>
+         <widget class="QScrollArea" name="plotCanvas">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAsNeeded</enum>
           </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="sizeAdjustPolicy">
+           <enum>QAbstractScrollArea::AdjustIgnored</enum>
+          </property>
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="plotContents">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>620</width>
+             <height>142</height>
+            </rect>
+           </property>
+          </widget>
          </widget>
         </item>
        </layout>
@@ -187,7 +206,7 @@
     <set>Qt::AllDockWidgetAreas</set>
    </property>
    <property name="windowTitle">
-    <string>Time &amp;Control</string>
+    <string/>
    </property>
    <attribute name="dockWidgetArea">
     <number>8</number>
@@ -554,6 +573,30 @@
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
+   <property name="mouseTracking">
+    <bool>false</bool>
+   </property>
+   <property name="tabletTracking">
+    <bool>false</bool>
+   </property>
+   <property name="acceptDrops">
+    <bool>false</bool>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="statusTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="accessibleName">
+    <string/>
+   </property>
+   <property name="accessibleDescription">
+    <string/>
+   </property>
    <property name="autoFillBackground">
     <bool>true</bool>
    </property>
@@ -564,7 +607,7 @@
     <set>Qt::LeftDockWidgetArea|Qt::RightDockWidgetArea</set>
    </property>
    <property name="windowTitle">
-    <string>&amp;Meta Information</string>
+    <string/>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
