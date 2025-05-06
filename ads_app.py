@@ -113,9 +113,8 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def adjustUI(self):
         self.mapView = QWebEngineView(self.groupBox_2)
-        self.mapView.setGeometry(QtCore.QRect(10, 30, 451, 231))
-        self.mapView.setProperty("url", QtCore.QUrl("about:blank"))
         self.mapView.setObjectName("mapView")
+        self.gridLayout_5.addWidget(self.mapView, 0, 0, 1, 1)
 
         self.cap = None
         self.total_frames = 0
