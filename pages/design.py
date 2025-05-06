@@ -219,7 +219,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setStretch(1, 10)
         self.horizontalLayout_2.setStretch(2, 2)
         self.horizontalLayout_2.setStretch(3, 10)
-        self.horizontalLayout_2.setStretch(4, 40)
+        self.horizontalLayout_2.setStretch(4, 20)
         self.horizontalLayout_2.setStretch(5, 1)
         self.horizontalLayout_2.setStretch(6, 1)
         self.horizontalLayout_2.setStretch(7, 1)
