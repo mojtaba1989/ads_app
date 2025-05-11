@@ -13,6 +13,7 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QPixmap, QImage
+from PyQt5.QtCore import QObject, pyqtSlot, QUrl
 
 from pages.scenario import Ui_addScenario
 

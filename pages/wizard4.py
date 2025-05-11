@@ -9,33 +9,45 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWebEngineWidgets import QWebEngineView
-
 
 
 class Ui_Wiz_4(object):
     def setupUi(self, Wiz_4):
         Wiz_4.setObjectName("Wiz_4")
-        Wiz_4.resize(493, 330)
+        Wiz_4.resize(513, 329)
+        self.verticalLayout_3 = QtWidgets.QVBoxLayout(Wiz_4)
+        self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.label = QtWidgets.QLabel(Wiz_4)
-        self.label.setGeometry(QtCore.QRect(190, 10, 61, 21))
         self.label.setObjectName("label")
-        self.finishB = QtWidgets.QPushButton(Wiz_4)
-        self.finishB.setGeometry(QtCore.QRect(390, 290, 89, 24))
-        self.finishB.setObjectName("finishB")
-        self.previousB = QtWidgets.QPushButton(Wiz_4)
-        self.previousB.setGeometry(QtCore.QRect(390, 260, 89, 25))
-        self.previousB.setObjectName("previousB")
-        self.webView = QWebEngineView(Wiz_4)
-        self.webView.setGeometry(QtCore.QRect(10, 100, 371, 211))
-        self.webView.setUrl(QtCore.QUrl("about:blank"))
-        self.webView.setObjectName("webView")
+        self.verticalLayout_3.addWidget(self.label)
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.gpsList = QtWidgets.QListWidget(Wiz_4)
-        self.gpsList.setGeometry(QtCore.QRect(10, 40, 371, 51))
+        self.gpsList.setMinimumSize(QtCore.QSize(0, 60))
+        self.gpsList.setMaximumSize(QtCore.QSize(16777215, 60))
         self.gpsList.setObjectName("gpsList")
+        self.verticalLayout_2.addWidget(self.gpsList)
+        self.webView = QtWidgets.QLabel(Wiz_4)
+        self.webView.setObjectName("webView")
+        self.verticalLayout_2.addWidget(self.webView)
+        self.horizontalLayout.addLayout(self.verticalLayout_2)
+        self.verticalLayout = QtWidgets.QVBoxLayout()
+        self.verticalLayout.setObjectName("verticalLayout")
         self.generateB = QtWidgets.QPushButton(Wiz_4)
-        self.generateB.setGeometry(QtCore.QRect(390, 40, 89, 51))
         self.generateB.setObjectName("generateB")
+        self.verticalLayout.addWidget(self.generateB)
+        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout.addItem(spacerItem)
+        self.previousB = QtWidgets.QPushButton(Wiz_4)
+        self.previousB.setObjectName("previousB")
+        self.verticalLayout.addWidget(self.previousB)
+        self.finishB = QtWidgets.QPushButton(Wiz_4)
+        self.finishB.setObjectName("finishB")
+        self.verticalLayout.addWidget(self.finishB)
+        self.horizontalLayout.addLayout(self.verticalLayout)
+        self.verticalLayout_3.addLayout(self.horizontalLayout)
 
         self.retranslateUi(Wiz_4)
         QtCore.QMetaObject.connectSlotsByName(Wiz_4)
@@ -44,9 +56,10 @@ class Ui_Wiz_4(object):
         _translate = QtCore.QCoreApplication.translate
         Wiz_4.setWindowTitle(_translate("Wiz_4", "Create *.DADS File Wizard (2/x)"))
         self.label.setText(_translate("Wiz_4", "Add Map"))
-        self.finishB.setText(_translate("Wiz_4", "Finish"))
-        self.previousB.setText(_translate("Wiz_4", "Previous"))
+        self.webView.setText(_translate("Wiz_4", "TextLabel"))
         self.generateB.setText(_translate("Wiz_4", "Generate"))
+        self.previousB.setText(_translate("Wiz_4", "Previous"))
+        self.finishB.setText(_translate("Wiz_4", "Finish"))
 
 
 if __name__ == "__main__":

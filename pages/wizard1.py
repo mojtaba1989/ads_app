@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'pages/wizard1.ui'
+# Form implementation generated from reading ui file './pages/UIs/wizard1.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.11
 #
@@ -15,37 +15,44 @@ class Ui_Wiz_1(object):
     def setupUi(self, Wiz_1):
         Wiz_1.setObjectName("Wiz_1")
         Wiz_1.resize(488, 330)
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(Wiz_1)
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.label = QtWidgets.QLabel(Wiz_1)
-        self.label.setGeometry(QtCore.QRect(180, 10, 141, 21))
         self.label.setObjectName("label")
-        self.nextB = QtWidgets.QPushButton(Wiz_1)
-        self.nextB.setGeometry(QtCore.QRect(390, 290, 89, 25))
-        self.nextB.setObjectName("nextB")
+        self.verticalLayout_2.addWidget(self.label)
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setObjectName("horizontalLayout")
         self.baglist = QtWidgets.QListWidget(Wiz_1)
-        self.baglist.setGeometry(QtCore.QRect(10, 40, 371, 281))
         self.baglist.setDragEnabled(False)
         self.baglist.setObjectName("baglist")
-        self.widget = QtWidgets.QWidget(Wiz_1)
-        self.widget.setGeometry(QtCore.QRect(390, 40, 91, 151))
-        self.widget.setObjectName("widget")
-        self.verticalLayout = QtWidgets.QVBoxLayout(self.widget)
-        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout.addWidget(self.baglist)
+        self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
-        self.addB = QtWidgets.QPushButton(self.widget)
+        self.addB = QtWidgets.QPushButton(Wiz_1)
         self.addB.setObjectName("addB")
         self.verticalLayout.addWidget(self.addB)
-        self.removeB = QtWidgets.QPushButton(self.widget)
+        self.removeB = QtWidgets.QPushButton(Wiz_1)
         self.removeB.setObjectName("removeB")
         self.verticalLayout.addWidget(self.removeB)
-        self.moveUpB = QtWidgets.QPushButton(self.widget)
+        self.moveUpB = QtWidgets.QPushButton(Wiz_1)
         self.moveUpB.setObjectName("moveUpB")
         self.verticalLayout.addWidget(self.moveUpB)
-        self.moveDownB = QtWidgets.QPushButton(self.widget)
+        self.moveDownB = QtWidgets.QPushButton(Wiz_1)
         self.moveDownB.setObjectName("moveDownB")
         self.verticalLayout.addWidget(self.moveDownB)
-        self.sortB = QtWidgets.QPushButton(self.widget)
+        self.sortB = QtWidgets.QPushButton(Wiz_1)
         self.sortB.setObjectName("sortB")
         self.verticalLayout.addWidget(self.sortB)
+        self.toCsvB = QtWidgets.QPushButton(Wiz_1)
+        self.toCsvB.setObjectName("toCsvB")
+        self.verticalLayout.addWidget(self.toCsvB)
+        spacerItem = QtWidgets.QSpacerItem(20, 78, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout.addItem(spacerItem)
+        self.nextB = QtWidgets.QPushButton(Wiz_1)
+        self.nextB.setObjectName("nextB")
+        self.verticalLayout.addWidget(self.nextB)
+        self.horizontalLayout.addLayout(self.verticalLayout)
+        self.verticalLayout_2.addLayout(self.horizontalLayout)
 
         self.retranslateUi(Wiz_1)
         QtCore.QMetaObject.connectSlotsByName(Wiz_1)
@@ -54,13 +61,14 @@ class Ui_Wiz_1(object):
         _translate = QtCore.QCoreApplication.translate
         Wiz_1.setWindowTitle(_translate("Wiz_1", "Create *.DADS File Wizard "))
         self.label.setText(_translate("Wiz_1", "Select rosbag file(s)"))
-        self.nextB.setText(_translate("Wiz_1", "Next"))
         self.baglist.setSortingEnabled(False)
         self.addB.setText(_translate("Wiz_1", "Add"))
         self.removeB.setText(_translate("Wiz_1", "Remove"))
         self.moveUpB.setText(_translate("Wiz_1", "Move Up"))
         self.moveDownB.setText(_translate("Wiz_1", "Move Down"))
         self.sortB.setText(_translate("Wiz_1", "Sort A->Z"))
+        self.toCsvB.setText(_translate("Wiz_1", "To CSV Tool"))
+        self.nextB.setText(_translate("Wiz_1", "Next"))
 
 
 if __name__ == "__main__":

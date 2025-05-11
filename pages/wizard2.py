@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'pages/wizard2.ui'
+# Form implementation generated from reading ui file './pages/UIs/wizard2.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.11
 #
@@ -15,19 +15,29 @@ class Ui_Wiz_2(object):
     def setupUi(self, Wiz_2):
         Wiz_2.setObjectName("Wiz_2")
         Wiz_2.resize(493, 330)
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(Wiz_2)
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.label = QtWidgets.QLabel(Wiz_2)
-        self.label.setGeometry(QtCore.QRect(180, 10, 141, 21))
         self.label.setObjectName("label")
-        self.nextB = QtWidgets.QPushButton(Wiz_2)
-        self.nextB.setGeometry(QtCore.QRect(390, 290, 89, 25))
-        self.nextB.setObjectName("nextB")
+        self.verticalLayout_2.addWidget(self.label)
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setObjectName("horizontalLayout")
         self.topiclist = QtWidgets.QListWidget(Wiz_2)
-        self.topiclist.setGeometry(QtCore.QRect(10, 40, 371, 281))
         self.topiclist.setDragEnabled(False)
         self.topiclist.setObjectName("topiclist")
+        self.horizontalLayout.addWidget(self.topiclist)
+        self.verticalLayout = QtWidgets.QVBoxLayout()
+        self.verticalLayout.setObjectName("verticalLayout")
+        spacerItem = QtWidgets.QSpacerItem(20, 108, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout.addItem(spacerItem)
         self.previousB = QtWidgets.QPushButton(Wiz_2)
-        self.previousB.setGeometry(QtCore.QRect(390, 260, 89, 25))
         self.previousB.setObjectName("previousB")
+        self.verticalLayout.addWidget(self.previousB)
+        self.nextB = QtWidgets.QPushButton(Wiz_2)
+        self.nextB.setObjectName("nextB")
+        self.verticalLayout.addWidget(self.nextB)
+        self.horizontalLayout.addLayout(self.verticalLayout)
+        self.verticalLayout_2.addLayout(self.horizontalLayout)
 
         self.retranslateUi(Wiz_2)
         QtCore.QMetaObject.connectSlotsByName(Wiz_2)
@@ -36,9 +46,9 @@ class Ui_Wiz_2(object):
         _translate = QtCore.QCoreApplication.translate
         Wiz_2.setWindowTitle(_translate("Wiz_2", "Create *.DADS File Wizard (2/x)"))
         self.label.setText(_translate("Wiz_2", "Select topic(s)"))
-        self.nextB.setText(_translate("Wiz_2", "Next"))
         self.topiclist.setSortingEnabled(False)
         self.previousB.setText(_translate("Wiz_2", "Previous"))
+        self.nextB.setText(_translate("Wiz_2", "Next"))
 
 
 if __name__ == "__main__":

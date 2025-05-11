@@ -16,6 +16,9 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QPixmap, QImage
+from PyQt5.QtWebEngineWidgets import QWebEngineView
+from PyQt5.QtCore import QObject, pyqtSlot, QUrl
+
 
 
 from pages.wizard1 import Ui_Wiz_1
@@ -24,6 +27,7 @@ from pages.wizard3 import Ui_Wiz_3
 from pages.wizard4 import Ui_Wiz_4
 
 from pages.videoProcessApp import VideoApp
+from pages.bagToCsvApp import BagToCsvApp
 
 class Page1(QtWidgets.QWidget, Ui_Wiz_1):
     def __init__(self, stacked_widget):
@@ -39,6 +43,7 @@ class Page1(QtWidgets.QWidget, Ui_Wiz_1):
         self.moveDownB.clicked.connect(self.down_)
         self.nextB.clicked.connect(self.next_)
         self.sortB.clicked.connect(self.sort_)
+        self.toCsvB.clicked.connect(self.to_csv)
     
     def add_(self):
         file_dialog = QFileDialog()
@@ -84,6 +89,10 @@ class Page1(QtWidgets.QWidget, Ui_Wiz_1):
         self.main_dict = {}
         self.main_dict['pwd'] = os.path.dirname(self.baglist.item(0).text())+'/'
         self.main_dict['bags'] = [self.baglist.item(i).text().replace(self.main_dict['pwd'], '') for i in range(self.baglist.count())]
+    
+    def to_csv(self):
+        self.to_csv_window = BagToCsvApp()
+        self.to_csv_window.show()
 
 
 class Page2(QtWidgets.QWidget, Ui_Wiz_2):
@@ -229,6 +238,10 @@ class Page4(QtWidgets.QWidget, Ui_Wiz_4):
         self.finishB.clicked.connect(self.finish)
         self.gpsList.itemClicked.connect(self.handle_item_click)
         self.generateB.clicked.connect(self.gen_map)
+        self.verticalLayout_2.removeWidget(self.webView)
+        self.webView = QWebEngineView()
+        self.webView.setObjectName("webView")
+        self.verticalLayout_2.addWidget(self.webView)
 
     def go_back(self):
         self.stacked_widget.setCurrentIndex(2)
@@ -246,7 +259,7 @@ class Page4(QtWidgets.QWidget, Ui_Wiz_4):
                 file_path += '.DADS'
             with open(file_path, 'w') as f:
                 json.dump(self.main_dict, f, indent=4)
-            self.parent().close()
+            self.close()
 
 
     def get_dict(self, dict):
@@ -297,9 +310,10 @@ class Page4(QtWidgets.QWidget, Ui_Wiz_4):
                                 color='red',
                                 fill_color='red',
                                 opacity=1).add_to(map)
-        map.save(os.path.join(self.main_dict['pwd'], self.main_dict['bags'][0] + '.map.html'))
-        self.webView.setUrl(QtCore.QUrl.fromLocalFile(os.path.join(self.main_dict['pwd'], 'map.html')))
         self.main_dict['map'] = self.main_dict['bags'][0] + '.map.html'
+        map.save(os.path.join(self.main_dict['pwd'], self.main_dict['map']))
+        self.webView.setUrl(QtCore.QUrl.fromLocalFile(os.path.join(self.main_dict['pwd'], self.main_dict['map'])))
+        
 
 
     
