@@ -22,6 +22,11 @@ from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtCore import QObject, pyqtSlot, QUrl
 from PyQt5.QtWebChannel import QWebChannel
 
+from stl import mesh
+from pyqtgraph.Qt import QtWidgets
+import pyqtgraph.opengl as gl
+from pyqtgraph.opengl import MeshData, GLMeshItem
+
 import pyqtgraph as pg
 
 from pages.design import Ui_MainWindow
@@ -31,11 +36,23 @@ from pages.scenarioApp import ScenarioApp
 from pages.plotApp import PlotApp
 from pages.bagToCsvApp import BagToCsvApp
 from pages.aboutPage import aboutPage
+from pages.lidarProcessApp import lidarProcessApp
 
 
 
 file_path = os.path.abspath(__file__)
 dir_path = os.path.dirname(file_path)
+
+car_mesh = mesh.Mesh.from_file("icons/car.stl")
+verts = car_mesh.vectors.reshape(-1, 3)
+unique_verts, index_map = np.unique(verts, axis=0, return_inverse=True)
+faces = index_map.reshape(-1, 3)
+car_mesh_data = MeshData(vertexes=unique_verts, faces=faces)
+human_mesh = mesh.Mesh.from_file("icons/human.stl")
+verts = human_mesh.vectors.reshape(-1, 3)
+unique_verts, index_map = np.unique(verts, axis=0, return_inverse=True)
+faces = index_map.reshape(-1, 3)
+human_mesh_data = MeshData(vertexes=unique_verts, faces=faces)
 
 
 def calculate_trip_distance(gps_dict):
@@ -63,7 +80,8 @@ def find_closest_frame(frame_dict, time):
     return closest_frame
 
 def get_closest(key, dict):
-        try:return dict[key]
+        try:
+            return key, dict[key]
         except:
             key_n = min(dict.keys(), key=lambda x: abs(int(x) - int(key)))
             return key_n, dict[key_n]
@@ -213,10 +231,28 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.scrollLayout = QtWidgets.QVBoxLayout(self.plotContents)
         self.scrollLayout.setContentsMargins(0,0,0,0)
-        
-        self.toolbar = QtWidgets.QToolBar()
-        self.horizontalLayout_5.insertWidget(0, self.toolbar)
         self.selection_manager = SelectionManager()
+
+        
+        for i in reversed(range(self.verticalLayout_6.count())):
+            self.verticalLayout_6.itemAt(i).widget().deleteLater()
+        self.Lidar.setTitle("Lidar")
+        self.lidarView = gl.GLViewWidget(self.Lidar)
+        self.lidarView.setBackgroundColor(200, 200, 200)
+        self.lidarView.setObjectName("lidarView")
+        self.verticalLayout_6.addWidget(self.lidarView)
+        my_vehicle = GLMeshItem(
+            meshdata=car_mesh_data,
+            smooth=False,
+            color=(1, 0, 0, 1),
+            shader='shaded',
+            drawEdges=False
+        )
+
+        my_vehicle.scale(1, 1, 1)
+        my_vehicle.translate(0, 0, 0)
+        my_vehicle.rotate(180, 0, 0, 1)
+        self.lidarView.addItem(my_vehicle)
 
         self.cap = None
         self.total_frames = 0
@@ -250,6 +286,7 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionBag_to_CSV.triggered.connect(self.add_on_open_bag_to_csv)
         self.actionImage_processing.triggered.connect(self.add_on_open_video_edit)
         self.actionAbout_US.triggered.connect(self.add_on_open_about)
+        self.actionLidar_Clean_Up.triggered.connect(self.add_on_open_lidar_clean_up)
         self.cameraSelect.currentIndexChanged.connect(self.video_load)
         self.ROStimeBox.textChanged.connect(self.main_wallclock_update)
         self.playBut.clicked.connect(self.video_play_callback)
@@ -265,7 +302,7 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionSave_As.triggered.connect(self.save_as_dads)
         self.remPlotB.clicked.connect(self.plot_remove)
         self.addPlotB.clicked.connect(self.plot_app_open)
-        self.resetPlotB.clicked.connect(self.reset_plots)
+        self.resetPlotB.clicked.connect(self.plot_reset_view_all)
 
     
     # handles
@@ -280,6 +317,54 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         icon_file = os.path.join(dir_path, 'icons', icon)
         obj.setText("")
         obj.setIcon(QtGui.QIcon(icon_file))
+
+    # Lidar 3D
+    def lidar_load(self):
+        self.lidar = None
+        if 'lidar' not in self.main_dict.keys():
+            return
+        file_ = os.path.join(self.main_dict['pwd'], self.main_dict['lidar'])
+        with open(file_, 'r') as f:
+            self.lidar = json.load(f)
+
+    def lidar_clean(self):
+        for item in self.lidarView.items[1:]:
+            self.lidarView.removeItem(item)
+
+    
+    def lidar_plot(self):
+        if self.lidar is None:
+            return
+        current_ = get_closest(int(self.ROStimeBox.toPlainText()), self.lidar)[1]
+        self.lidar_clean()
+        for obj in current_:
+            if np.abs(obj[1]) < .5 and np.abs(obj[0]) < 3:
+                continue
+            if obj[3] == 'car':
+                mesh = GLMeshItem(
+                    meshdata=car_mesh_data,
+                    smooth=False,
+                    color=(1, 1, 1, 1),
+                    shader='shaded',
+                    drawEdges=False
+                )
+                mesh.scale(1, 1, 1)
+                mesh.rotate(180, 0, 0, 1)         
+            elif obj[3] == 'pedestrian':
+                mesh = GLMeshItem(
+                    meshdata=human_mesh_data,
+                    smooth=False,
+                    color=(1, 1, 1, 1),
+                    shader='shaded',
+                    drawEdges=False
+                )
+                mesh.scale(.1, .1, .1)
+                mesh.rotate(90, 1, 0, 0)
+            else:
+                continue         
+            mesh.translate(obj[0], obj[1], 0)
+            self.lidarView.addItem(mesh)
+
     
     # Plots
     def plot_add_new(self, x, y, legend, index=None):
@@ -291,11 +376,15 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         canvas.plot(x, y, pen=pen, name=legend)
         canvas.plot_widget.setLabel("bottom", "Time (ns)")
         canvas.y_range = [min(y), max(y)]
+        canvas.x_range = [min(x), max(x)]
         canvas.marker_moved.connect(self.plot_marker_moved_callback)
         canvas.map_current_position_callback(x[0])
         self.plot_obj_list.append(canvas)
         self.scrollLayout.addWidget(canvas)
-        canvas.reset_view()
+    
+    def plot_sync_time_axis(self):
+        for obj in self.plot_obj_list:
+            obj.plot_widget.setXLink(self.plot_obj_list[0].plot_widget) 
 
     def plot_marker_moved_callback(self, time_value):
         self.ROStimeBox.setText(str(int(time_value)))
@@ -321,7 +410,7 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.selection_manager.current = None
         self.plot_obj_list = []
     
-    def reset_plots(self):
+    def plot_reset_view_all(self):
         for obj in self.plot_obj_list:
             obj.reset_view()
 
@@ -344,6 +433,8 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
                 else:
                     continue
             self.plot_add_new(time, y, plt[2], plt[0])
+        self.plot_sync_time_axis()
+        self.plot_reset_view_all()
 
     #video controls    
     def video_load(self):
@@ -416,7 +507,7 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
     def video_display(self, frame):
         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         image = Image.fromarray(frame_rgb)
-        image = image.resize((800, 450))
+        image = image.resize((512, 288))
 
         frame_array = np.array(image)
         height, width, channel = frame_array.shape
@@ -607,6 +698,7 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
             self.NOW = int(self.ROStimeBox.toPlainText())
             self.DTBox.setText(str(datetime.datetime.fromtimestamp(float(self.NOW)/1e9)))
             self.bridge.map_current_position_callback(get_closest(self.NOW, self.gps)[1])
+            self.lidar_plot()
         except:
             self.NOW = -1
 
@@ -629,6 +721,10 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         info['traveled distance Km'] = f'{calculate_trip_distance(self.gps)[0]:.2f}'
         info['traveled distance mi'] = f'{calculate_trip_distance(self.gps)[1]:.2f}'
         self.main_dict['info'] = info
+
+    def main_update_dict(self, new_dict):
+        self.main_dict = new_dict
+        self.save_dads()
         
     
     def load_all(self):
@@ -640,6 +736,7 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.main_load_info()
         self.scenario_load_from_dictionary()
         self.plot_load()
+        self.lidar_load()
 
     def main_button_set_all(self, lock=False):
         self.scenAddB.setEnabled(lock)
@@ -694,6 +791,10 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
     def add_on_open_about(self):
         self.about_window = aboutPage()
         self.about_window.show()
+
+    def add_on_open_lidar_clean_up(self):
+        self.lidar_window = lidarProcessApp(self.main_update_dict)
+        self.lidar_window.show()
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)

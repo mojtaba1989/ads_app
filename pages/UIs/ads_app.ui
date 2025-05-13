@@ -83,7 +83,7 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_6">
          <item>
-          <widget class="QLabel" name="label_2">
+          <widget class="QLabel" name="lidarView">
            <property name="text">
             <string/>
            </property>
@@ -195,6 +195,7 @@
     <addaction name="actionImage_processing"/>
     <addaction name="actionBag_to_CSV"/>
     <addaction name="actionObject_detection"/>
+    <addaction name="actionLidar_Clean_Up"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
@@ -854,12 +855,17 @@
   </action>
   <action name="actionHelp">
    <property name="text">
-    <string>Help</string>
+    <string>&amp;Help</string>
    </property>
   </action>
   <action name="actionAbout_US">
    <property name="text">
-    <string>About US</string>
+    <string>&amp;About US</string>
+   </property>
+  </action>
+  <action name="actionLidar_Clean_Up">
+   <property name="text">
+    <string>Lidar &amp;Clean Up</string>
    </property>
   </action>
  </widget>
