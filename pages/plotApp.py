@@ -31,6 +31,8 @@ class PlotApp(QtWidgets.QWidget, Ui_plot):
 
     def adjustUI(self):
         to_be_checked = []
+        if 'plots' not in self.main_dict.keys():
+            self.main_dict['plots'] = []
         for plt in self.main_dict['plots']:
             to_be_checked.append((plt[1], plt[2]))
         for topic in self.main_dict['topics'].keys():

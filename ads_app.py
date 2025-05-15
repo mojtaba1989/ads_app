@@ -253,6 +253,7 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         my_vehicle.translate(0, 0, 0)
         my_vehicle.rotate(180, 0, 0, 1)
         self.lidarView.addItem(my_vehicle)
+        self.lidarView.setCameraPosition(distance=5, elevation=45, azimuth=145)
 
         self.cap = None
         self.total_frames = 0
@@ -361,8 +362,10 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
                 mesh.scale(.1, .1, .1)
                 mesh.rotate(90, 1, 0, 0)
             else:
-                continue         
+                continue
+            mesh.rotate(obj[2], 0, 0, 1)        
             mesh.translate(obj[0], obj[1], 0)
+            
             self.lidarView.addItem(mesh)
 
     
@@ -420,6 +423,8 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def plot_load(self):
         self.plot_remove_all()
+        if 'plots' not in self.main_dict.keys():
+            return
         for plt in self.main_dict['plots']:
             time = []
             y = []
