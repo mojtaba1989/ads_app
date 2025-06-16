@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import (
     QApplication, QLabel, QPushButton, QVBoxLayout,
     QHBoxLayout, QWidget, QSlider, QFileDialog, QDialog,
-    QStackedWidget, QListWidgetItem
+    QStackedWidget, QListWidgetItem, QListWidget, QGroupBox
 )
 from PyQt5.QtCore import Qt, QTimer, pyqtSignal
 from PyQt5.QtGui import QPixmap, QImage
@@ -37,7 +37,7 @@ from pages.plotApp import PlotApp
 from pages.bagToCsvApp import BagToCsvApp
 from pages.aboutPage import aboutPage
 from pages.lidarProcessApp import lidarProcessApp
-from pages.autoScenarioApp import AutoscenarioApp
+from pages.event_detector import EventDetector 
 
 
 
@@ -228,20 +228,22 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
     def adjustUI(self):
         self.mapView = QWebEngineView(self.groupBox_2)
         self.mapView.setObjectName("mapView")
-        self.gridLayout_5.addWidget(self.mapView, 0, 0, 1, 1)
+        self.verticalLayout_7.addWidget(self.mapView)        #, 0, 0, 1, 1)
 
         self.scrollLayout = QtWidgets.QVBoxLayout(self.plotContents)
         self.scrollLayout.setContentsMargins(0,0,0,0)
         self.selection_manager = SelectionManager()
+        
+
 
         
-        for i in reversed(range(self.verticalLayout_6.count())):
-            self.verticalLayout_6.itemAt(i).widget().deleteLater()
+        # for i in reversed(range(self.verticalLayout_7.count())):
+        #     self.verticalLayout_7.itemAt(i).widget().deleteLater()
         self.Lidar.setTitle("Lidar")
         self.lidarView = gl.GLViewWidget(self.Lidar)
         self.lidarView.setBackgroundColor(200, 200, 200)
         self.lidarView.setObjectName("lidarView")
-        self.verticalLayout_6.addWidget(self.lidarView)
+        self.verticalLayout_7.addWidget(self.lidarView)
         my_vehicle = GLMeshItem(
             meshdata=car_mesh_data,
             smooth=False,
@@ -289,7 +291,6 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionImage_processing.triggered.connect(self.add_on_open_video_edit)
         self.actionAbout_US.triggered.connect(self.add_on_open_about)
         self.actionLidar_Clean_Up.triggered.connect(self.add_on_open_lidar_clean_up)
-        self.actionScenario_Detection.triggered.connect(self.add_on_auto_scenario_detection)
         self.cameraSelect.currentIndexChanged.connect(self.video_load)
         self.ROStimeBox.textChanged.connect(self.main_wallclock_update)
         self.playBut.clicked.connect(self.video_play_callback)
@@ -300,12 +301,20 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.scenEditB.clicked.connect(self.scenario_edit)
         self.scenGoToB.clicked.connect(self.scenario_goto_callback)
         self.scenRemoveB.clicked.connect(self.scenario_remove)
-        self.scenList.itemDoubleClicked.connect(self.scenario_goto_callback)
+        # self.scenEventsB = QtWidgets.QPushButton("Events", self.groupBox)
+        self.scenEventsB.clicked.connect(self.load_lane_turn_events)
+
+        # self.gridLayout_4.addWidget(self.scenEventsB)
+
+        self.scenList.itemDoubleClicked.connect(self.goto_event_frame)
         self.actionSave.triggered.connect(self.save_dads)
         self.actionSave_As.triggered.connect(self.save_as_dads)
         self.remPlotB.clicked.connect(self.plot_remove)
         self.addPlotB.clicked.connect(self.plot_app_open)
         self.resetPlotB.clicked.connect(self.plot_reset_view_all)
+        
+        
+       
 
     
     # handles
@@ -369,6 +378,101 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
             mesh.translate(obj[0], obj[1], 0)
             
             self.lidarView.addItem(mesh)
+
+    # Event detection
+    def load_lane_turn_events(self):
+        velocity = self.load_topic_csv('ssc_velocity')
+        steering = self.load_topic_csv('steering_feedback')
+        cam = self.load_topic_csv('cam_zed2i')
+        
+        if velocity.empty or steering.empty or cam.empty:
+            QtWidgets.QMessageBox.warning(self, "Missing Data", "Velocity, steering, or camera data is missing.")
+            return
+        
+        for i in reversed(range(self.scenList.count())):
+            if "[Event]" in self.scenList.item(i).text():
+                self.scenList.takeItem(i)
+                
+        self.main_dict.setdefault('scenarios', {})
+        existing_keys = list(self.main_dict['scenarios'].keys())
+        next_key = max([int(k) for k in existing_keys], default=0) + 1
+        
+        detector = EventDetector(velocity, steering, cam)
+        events = detector.detect_events()
+        self.lane_turn_events = events.to_dict('records')
+        
+        # for idx, event in enumerate(self.lane_turn_events):
+        for event in self.lane_turn_events:
+            event_str = f"[Event]{event['event']} @ Seq {int(event['seq'])}"
+            self.scenList.addItem(event_str)
+            self.main_dict['scenarios'][str(next_key)] = [int(event['time']), event['event'], f"Seq {int(event['seq'])}"]
+            next_key += 1
+            
+    def load_topic_csv(self, topic):
+        dfs = []
+        for file in self.main_dict['topics'].get(topic, []):
+            path = os.path.join(self.main_dict['pwd'], 'csv', file + '.' + topic)
+            if os.path.exists(path):
+                try:
+                    df = pd.read_csv(path)
+                    dfs.append(df)
+                except Exception as e:
+                    print(f"Failed to read {path}: {e}")
+        if dfs:
+            return pd.concat(dfs, ignore_index=True)
+        return pd.DataFrame()
+    
+    
+    def goto_event_frame(self, item):
+        if not hasattr(self, 'lane_turn_events'):
+            return
+        
+        text = item.text()
+        if "[Event]" not in text:
+            return  # ignore non-event items
+
+        # Get event by matching index
+        event_items = [self.scenList.item(i).text() for i in range(self.scenList.count()) if "[Event]" in self.scenList.item(i).text()]
+        try:
+            index = event_items.index(text)
+            event = self.lane_turn_events[index]
+            frame = get_closest(str(int(event['time'])), self.sync['rev'])[1]
+            self.video_slider_moved_callback(int(frame))
+        except Exception as e:
+            QtWidgets.QMessageBox.warning(self, "Navigation Error", f"Failed to go to event frame: {e}")
+        
+        
+        
+        # index = self.scenList.row(item)
+        # if index >= len(self.lane_turn_events):
+        #     return
+
+        # event = self.lane_turn_events[index]
+        # try:
+        #     frame = get_closest(str(int(event['time'])), self.sync['rev'])[1]
+        #     self.video_slider_moved_callback(int(frame))
+        # except Exception as e:
+        #     QtWidgets.QMessageBox.warning(self, "Navigation Error", f"Failed to locate frame: {e}")
+
+    
+    # def load_topic_csv(self, topic):
+    #     dfs = []
+    #     for file in self.main_dict['topics'].get(topic, []):
+    #         path = os.path.join(self.main_dict['pwd'], 'csv', file + '.' + topic)
+    #         if os.path.exists(path):
+    #             df = pd.read_csv(path)
+    #             if not df.empty:
+    #                 dfs.append(df)
+    #     return pd.concat(dfs, ignore_index=True) if dfs else pd.DataFrame()
+    
+    
+    # def goto_event_frame(self, item):
+    #     index = self.eventList.row(item)
+    #     event = self.lane_turn_events[index]
+    #     frame = get_closest(str(int(event['time'])), self.sync['rev'])[1]
+    #     self.video_slider_moved_callback(int(frame))
+    #     # self.load_lane_turn_events()
+
 
     
     # Plots
@@ -768,6 +872,8 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
             self.main_dict['scenarios'] = {}
         self.load_all()
         self.main_button_set_all(True)
+        
+
 
     def save_dads(self):
         with open(self.FILENAME, 'w') as f:
@@ -802,10 +908,6 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
     def add_on_open_lidar_clean_up(self):
         self.lidar_window = lidarProcessApp(self.main_update_dict)
         self.lidar_window.show()
-
-    def add_on_auto_scenario_detection(self):
-        self.auto_scena_det = AutoscenarioApp(self.main_dict, external_1=self.scenario_insert_from_app)
-        self.auto_scena_det.show()
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)

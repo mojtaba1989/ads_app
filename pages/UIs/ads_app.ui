@@ -154,8 +154,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>667</width>
-             <height>281</height>
+             <width>679</width>
+             <height>318</height>
             </rect>
            </property>
           </widget>
@@ -173,7 +173,7 @@
      <x>0</x>
      <y>0</y>
      <width>1124</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -196,6 +196,7 @@
     <addaction name="actionBag_to_CSV"/>
     <addaction name="actionObject_detection"/>
     <addaction name="actionLidar_Clean_Up"/>
+    <addaction name="actionScenario_Detection"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
@@ -801,6 +802,9 @@
    <property name="text">
     <string>&amp;Open</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
   </action>
   <action name="actionWizard">
    <property name="text">
@@ -842,6 +846,9 @@
    <property name="text">
     <string>&amp;Save</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
   </action>
   <action name="actionSave_As">
    <property name="text">
@@ -866,6 +873,11 @@
   <action name="actionLidar_Clean_Up">
    <property name="text">
     <string>Lidar &amp;Clean Up</string>
+   </property>
+  </action>
+  <action name="actionScenario_Detection">
+   <property name="text">
+    <string>Scenario Detection</string>
    </property>
   </action>
  </widget>
