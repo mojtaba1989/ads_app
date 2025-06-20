@@ -38,6 +38,7 @@ from pages.bagToCsvApp import BagToCsvApp
 from pages.aboutPage import aboutPage
 from pages.lidarProcessApp import lidarProcessApp
 from pages.autoScenarioApp import AutoscenarioApp
+from pages.reportApp import report_Generator
 
 
 
@@ -272,11 +273,11 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setIcon(self.beginningBut, 'begining')
         self.setIcon(self.rewindBut, 'rewind')
         self.setIcon(self.skipBut, 'forward')
-        self.setIcon(self.endBut, 'end')
+        self.setIcon(self.refreshBut, 'refresh')
         self.beginningBut.setEnabled(False)
         self.rewindBut.setEnabled(False)
         self.skipBut.setEnabled(False)
-        self.endBut.setEnabled(False)
+        self.refreshBut.setEnabled(False)
 
         self.main_button_set_all(False)
         
@@ -290,12 +291,14 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionAbout_US.triggered.connect(self.add_on_open_about)
         self.actionLidar_Clean_Up.triggered.connect(self.add_on_open_lidar_clean_up)
         self.actionScenario_Detection.triggered.connect(self.add_on_auto_scenario_detection)
+        self.actionGenerate_Report.triggered.connect(self.add_on_generate_report)
         self.cameraSelect.currentIndexChanged.connect(self.video_load)
         self.ROStimeBox.textChanged.connect(self.main_wallclock_update)
         self.playBut.clicked.connect(self.video_play_callback)
         self.skipBut.pressed.connect(self.video_fast_forward_pressed)
         self.skipBut.released.connect(self.video_fast_forward_released)
         self.ejectBut.clicked.connect(self.open_dads)
+        self.refreshBut.clicked.connect(self.map_refresh)
         self.scenAddB.clicked.connect(self.scenario_app_open)
         self.scenEditB.clicked.connect(self.scenario_edit)
         self.scenGoToB.clicked.connect(self.scenario_goto_callback)
@@ -585,6 +588,11 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
         js = f"setRoute({js_array});"
         QTimer.singleShot(2000, lambda: self.mapView.page().runJavaScript(js))
+        self.refreshBut.setEnabled(True)
+    
+    def map_refresh(self):
+        # self.map_generate_gps_dictionary()
+        self.map_load()
     
     def map_generate_gps_dictionary(self):
         self.gps = {}
@@ -806,6 +814,11 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
     def add_on_auto_scenario_detection(self):
         self.auto_scena_det = AutoscenarioApp(self.main_dict, external_1=self.scenario_insert_from_app)
         self.auto_scena_det.show()
+
+    def add_on_generate_report(self):
+        report = report_Generator(self.main_dict, self.gps)
+        report.generate_report()
+
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)

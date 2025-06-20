@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Python Report</title>
+    <button onclick="window.print()" id="print-btn">🖨️ Print Report</button>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        h1, h2 {
+            color: #2c3e50;
+        }
+
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .map-box {
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 10px;
+            overflow: hidden;
+        }
+        @media print {
+        body {
+            background: white;
+            color: black;
+        }
+
+        .section {
+            box-shadow: none;
+            border: 1px solid #000;
+            page-break-inside: avoid;
+        }
+
+        .map-box {
+            display: none; /* hide map if printing */
+        }
+
+        img {
+            page-break-inside: avoid;
+        }
+
+        h1, h2 {
+            color: black;
+        }
+
+        @page {
+            margin: 20mm;
+        }
+    }
+    #print-btn {
+        background: #3498db;
+        color: white;
+        border: none;
+        padding: 10px 16px;
+        font-size: 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        margin-bottom: 20px;
+    }
+
+    @media print {
+        #print-btn {
+            display: none;
+        }
+    }
+    </style>
+
+    <style>
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .info-table th, .info-table td {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        .info-table th {
+            background-color: #f2f2f2;
+            width: 40%;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Python Report with Plots and Map</h1>
+    <p>This report demonstrates embedding text, charts, and a map using Python tools.</p>
+    <div class="section">
+        <h2>Report Info</h2>
+        <table class="info-table">
+            <tbody>
+            {% for key, value in info.items() %}
+                <tr>
+                    <th>{{ key }}</th>
+                    <td>{{ value }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="section">
+        <h2>Line Plot</h2>
+        <p>This is a line plot generated with matplotlib.</p>
+        <img src="data:image/png;base64,{{ plot_data }}" alt="Line Plot">
+    </div>
+
+    <div class="section">
+        <h2>Pie Chart</h2>
+        <p>This is a pie chart showing fruit distribution.</p>
+        <img src="data:image/png;base64,{{ pie_data }}" alt="Pie Chart">
+    </div>
+
+    <div class="section">
+        <h2>Map</h2>
+        <p>This is an interactive map centered around a specific location with a marker.</p>
+        <div class="map-box">
+            {{ map_html | safe }}
+        </div>
+    </div>
+
+    <h1>Dynamic Interactive Plotly Report</h1>
+
+    {% for plot_html in plots %}
+    <div class="section">
+        {{ plot_html | safe }}
+    </div>
+    {% endfor %}
+
+</body>
+</html>
