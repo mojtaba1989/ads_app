@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1124</width>
+    <width>1186</width>
     <height>763</height>
    </rect>
   </property>
@@ -67,6 +67,12 @@
          </item>
          <item>
           <widget class="QLabel" name="cameaDisplay">
+           <property name="minimumSize">
+            <size>
+             <width>320</width>
+             <height>180</height>
+            </size>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -77,19 +83,38 @@
          </item>
         </layout>
        </widget>
-       <widget class="QGroupBox" name="Lidar">
-        <property name="title">
-         <string>Lidar - Birdeye view</string>
+       <widget class="QTabWidget" name="tabWidget">
+        <property name="currentIndex">
+         <number>1</number>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_6">
-         <item>
-          <widget class="QLabel" name="lidarView">
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        <widget class="QWidget" name="lidar_3d">
+         <attribute name="title">
+          <string>Lidar 3D</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_6">
+          <item>
+           <widget class="QLabel" name="lidarView">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="lidar_ttc">
+         <attribute name="title">
+          <string>TTC</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_8">
+          <item>
+           <widget class="QLabel" name="ttc_view">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
        </widget>
       </widget>
       <widget class="QGroupBox" name="groupBox_5">
@@ -154,8 +179,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>667</width>
-             <height>281</height>
+             <width>741</width>
+             <height>288</height>
             </rect>
            </property>
           </widget>
@@ -172,8 +197,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1124</width>
-     <height>22</height>
+     <width>1186</width>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -197,6 +222,7 @@
     <addaction name="actionObject_detection"/>
     <addaction name="actionLidar_Clean_Up"/>
     <addaction name="actionScenario_Detection"/>
+    <addaction name="actionTTC_Tool"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
@@ -878,6 +904,11 @@
   <action name="actionGenerate_Report">
    <property name="text">
     <string>&amp;Generate Report</string>
+   </property>
+  </action>
+  <action name="actionTTC_Tool">
+   <property name="text">
+    <string>TTC Tool</string>
    </property>
   </action>
  </widget>

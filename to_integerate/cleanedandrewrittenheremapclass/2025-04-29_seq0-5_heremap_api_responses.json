@@ -1,0 +1,2727 @@
+{
+  "route_name": "2025-04-29_seq0-5",
+  "export_timestamp": "2025-07-07T19:10:22.122287",
+  "total_segments": 20,
+  "api_responses": [
+    {
+      "segment_id": 0,
+      "request_params": {
+        "apikey": "uUFZJMYlitfRsDjEJIHqZ1fWoc6jhycasfFwsIBlhWs",
+        "transportMode": "car",
+        "origin": "42.355686,-83.066452",
+        "destination": "42.360127,-83.068988",
+        "return": "polyline,summary,actions,instructions",
+        "spans": "speedLimit,dynamicSpeedInfo"
+      },
+      "response_data": {
+        "routes": [
+          {
+            "id": "9de20d06-f773-4f7a-8b7c-4fca87bce9d2",
+            "sections": [
+              {
+                "id": "62002c8a-f653-4291-89fc-15e6d3fa01d7",
+                "type": "vehicle",
+                "actions": [
+                  {
+                    "action": "depart",
+                    "duration": 116,
+                    "length": 539,
+                    "instruction": "Head toward Warren Ave W on Cass Ave. Go for 539 m.",
+                    "offset": 0
+                  },
+                  {
+                    "action": "arrive",
+                    "duration": 0,
+                    "length": 0,
+                    "instruction": "Arrive at Cass Ave. Your destination is on the right.",
+                    "offset": 18
+                  }
+                ],
+                "departure": {
+                  "time": "2025-07-07T19:10:22-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3556829,
+                      "lng": -83.0664622
+                    },
+                    "originalLocation": {
+                      "lat": 42.355686,
+                      "lng": -83.0664521
+                    }
+                  }
+                },
+                "arrival": {
+                  "time": "2025-07-07T19:12:18-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3601223,
+                      "lng": -83.069003
+                    },
+                    "originalLocation": {
+                      "lat": 42.360127,
+                      "lng": -83.068988
+                    }
+                  }
+                },
+                "summary": {
+                  "duration": 116,
+                  "length": 539,
+                  "baseDuration": 89
+                },
+                "polyline": "BGm-l5wC7l_t-EuPzIsJ_Ewb7QwCnBwR_JwHrE4wBjc0KnGsTzK8L7GkI_EgP3IkIrE0FjDkhBjSkNvH4NjIkK5F",
+                "spans": [
+                  {
+                    "offset": 0,
+                    "speedLimit": 11.1111116,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 6.1111112,
+                      "baseSpeed": 7.5,
+                      "turnTime": 8
+                    }
+                  },
+                  {
+                    "offset": 1,
+                    "speedLimit": 11.1111116,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 6.1111112,
+                      "baseSpeed": 7.5,
+                      "turnTime": 8
+                    }
+                  },
+                  {
+                    "offset": 2,
+                    "speedLimit": 11.1111116,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 5.2777781,
+                      "baseSpeed": 7.5,
+                      "turnTime": 0
+                    }
+                  }
+                ],
+                "language": "en-us",
+                "transport": {
+                  "mode": "car"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "timestamp": "2025-07-07T19:10:17.155595"
+    },
+    {
+      "segment_id": 1,
+      "request_params": {
+        "apikey": "uUFZJMYlitfRsDjEJIHqZ1fWoc6jhycasfFwsIBlhWs",
+        "transportMode": "car",
+        "origin": "42.360127,-83.068988",
+        "destination": "42.362305,-83.072761",
+        "return": "polyline,summary,actions,instructions",
+        "spans": "speedLimit,dynamicSpeedInfo"
+      },
+      "response_data": {
+        "routes": [
+          {
+            "id": "9a593c74-e014-4410-9070-fbe0053f517f",
+            "sections": [
+              {
+                "id": "2bbbcc2e-dee2-40ee-9bfc-ac4220d5db1b",
+                "type": "vehicle",
+                "actions": [
+                  {
+                    "action": "depart",
+                    "duration": 41,
+                    "length": 167,
+                    "instruction": "Head toward Ferry St W on Cass Ave. Go for 167 m.",
+                    "offset": 0
+                  },
+                  {
+                    "action": "turn",
+                    "duration": 32,
+                    "length": 215,
+                    "instruction": "Turn left onto Palmer St W. Go for 215 m.",
+                    "offset": 6,
+                    "direction": "left",
+                    "severity": "quite"
+                  },
+                  {
+                    "action": "turn",
+                    "duration": 25,
+                    "length": 179,
+                    "instruction": "Turn right onto 2nd Ave. Go for 179 m.",
+                    "offset": 14,
+                    "direction": "right",
+                    "severity": "quite"
+                  },
+                  {
+                    "action": "arrive",
+                    "duration": 0,
+                    "length": 0,
+                    "instruction": "Arrive at 2nd Ave. Your destination is on the left.",
+                    "offset": 22
+                  }
+                ],
+                "departure": {
+                  "time": "2025-07-07T19:10:22-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3601223,
+                      "lng": -83.069003
+                    },
+                    "originalLocation": {
+                      "lat": 42.360127,
+                      "lng": -83.068988
+                    }
+                  }
+                },
+                "arrival": {
+                  "time": "2025-07-07T19:12:00-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3623068,
+                      "lng": -83.0727211
+                    },
+                    "originalLocation": {
+                      "lat": 42.3623049,
+                      "lng": -83.072761
+                    }
+                  }
+                },
+                "summary": {
+                  "duration": 98,
+                  "length": 561,
+                  "baseDuration": 88
+                },
+                "polyline": "BG0zu5wC1kku-E4L1GoV7LoV7LsJzF4NjI4I_EnLjhBvCjI_EzPvH3XvH_Y3D7LrEzPrEjSkSvCoLvCoQ3I8L_E4I_EgKnGwMnB-HV",
+                "spans": [
+                  {
+                    "offset": 0,
+                    "speedLimit": 11.1111116,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 5.2777781,
+                      "baseSpeed": 7.5,
+                      "turnTime": 10
+                    }
+                  },
+                  {
+                    "offset": 6,
+                    "speedLimit": 11.1111116,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 7.5,
+                      "baseSpeed": 7.5,
+                      "turnTime": 3
+                    }
+                  },
+                  {
+                    "offset": 14,
+                    "speedLimit": 11.1111116,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 7.5,
+                      "baseSpeed": 7.5,
+                      "turnTime": 1
+                    }
+                  },
+                  {
+                    "offset": 20,
+                    "speedLimit": 11.1111116,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 7.5,
+                      "baseSpeed": 7.5,
+                      "turnTime": 0
+                    }
+                  }
+                ],
+                "language": "en-us",
+                "transport": {
+                  "mode": "car"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "timestamp": "2025-07-07T19:10:17.381380"
+    },
+    {
+      "segment_id": 2,
+      "request_params": {
+        "apikey": "uUFZJMYlitfRsDjEJIHqZ1fWoc6jhycasfFwsIBlhWs",
+        "transportMode": "car",
+        "origin": "42.362305,-83.072761",
+        "destination": "42.364734,-83.073084",
+        "return": "polyline,summary,actions,instructions",
+        "spans": "speedLimit,dynamicSpeedInfo"
+      },
+      "response_data": {
+        "routes": [
+          {
+            "id": "760e97d8-7f87-4cdd-86db-d01cef6d9418",
+            "sections": [
+              {
+                "id": "d072cb7e-9774-41af-945b-56039b6069d0",
+                "type": "vehicle",
+                "actions": [
+                  {
+                    "action": "depart",
+                    "duration": 38,
+                    "length": 264,
+                    "instruction": "Head toward Antoinette St on 2nd Ave. Go for 264 m.",
+                    "offset": 0
+                  },
+                  {
+                    "action": "turn",
+                    "duration": 10,
+                    "length": 72,
+                    "instruction": "Turn right onto Burroughs St. Go for 72 m.",
+                    "offset": 7,
+                    "direction": "right",
+                    "severity": "quite"
+                  },
+                  {
+                    "action": "arrive",
+                    "duration": 0,
+                    "length": 0,
+                    "instruction": "Arrive at Burroughs St. Your destination is on the right.",
+                    "offset": 9
+                  }
+                ],
+                "departure": {
+                  "time": "2025-07-07T19:10:23-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3623068,
+                      "lng": -83.0727211
+                    },
+                    "originalLocation": {
+                      "lat": 42.3623049,
+                      "lng": -83.072761
+                    }
+                  }
+                },
+                "arrival": {
+                  "time": "2025-07-07T19:11:11-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3647553,
+                      "lng": -83.0730961
+                    },
+                    "originalLocation": {
+                      "lat": 42.3647339,
+                      "lng": -83.0730841
+                    }
+                  }
+                },
+                "summary": {
+                  "duration": 48,
+                  "length": 336,
+                  "baseDuration": 48
+                },
+                "polyline": "BGm8y5wChtru-EuGR0KrEoQrJoazPoQ3I8pB3XgU7LoLwlBiEsN",
+                "spans": [
+                  {
+                    "offset": 0,
+                    "speedLimit": 11.1111116,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 7.5,
+                      "baseSpeed": 7.5,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 2,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 7.5,
+                      "baseSpeed": 7.5,
+                      "turnTime": 3
+                    }
+                  },
+                  {
+                    "offset": 7,
+                    "speedLimit": 11.1111116,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 7.5,
+                      "baseSpeed": 7.5,
+                      "turnTime": 0
+                    }
+                  }
+                ],
+                "language": "en-us",
+                "transport": {
+                  "mode": "car"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "timestamp": "2025-07-07T19:10:17.615997"
+    },
+    {
+      "segment_id": 3,
+      "request_params": {
+        "apikey": "uUFZJMYlitfRsDjEJIHqZ1fWoc6jhycasfFwsIBlhWs",
+        "transportMode": "car",
+        "origin": "42.364734,-83.073084",
+        "destination": "42.367714,-83.073853",
+        "return": "polyline,summary,actions,instructions",
+        "spans": "speedLimit,dynamicSpeedInfo"
+      },
+      "response_data": {
+        "routes": [
+          {
+            "id": "c2cb0401-54fb-4aaf-99b4-4b16ae43b71a",
+            "sections": [
+              {
+                "id": "e6562475-001d-41fd-acad-1c97391e90a4",
+                "type": "vehicle",
+                "actions": [
+                  {
+                    "action": "depart",
+                    "duration": 13,
+                    "length": 72,
+                    "instruction": "Head southwest on Burroughs St. Go for 72 m.",
+                    "offset": 0
+                  },
+                  {
+                    "action": "turn",
+                    "duration": 44,
+                    "length": 317,
+                    "instruction": "Turn right onto 2nd Ave. Go for 317 m.",
+                    "offset": 2,
+                    "direction": "right",
+                    "severity": "quite"
+                  },
+                  {
+                    "action": "turn",
+                    "duration": 20,
+                    "length": 156,
+                    "instruction": "Turn right onto W Baltimore Ave. Go for 156 m.",
+                    "offset": 12,
+                    "direction": "right",
+                    "severity": "quite"
+                  },
+                  {
+                    "action": "arrive",
+                    "duration": 0,
+                    "length": 0,
+                    "instruction": "Arrive at W Baltimore Ave. Your destination is on the right.",
+                    "offset": 16
+                  }
+                ],
+                "departure": {
+                  "time": "2025-07-07T19:10:23-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3647553,
+                      "lng": -83.0730961
+                    },
+                    "originalLocation": {
+                      "lat": 42.3647339,
+                      "lng": -83.0730841
+                    }
+                  }
+                },
+                "arrival": {
+                  "time": "2025-07-07T19:11:40-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3677292,
+                      "lng": -83.0738639
+                    },
+                    "originalLocation": {
+                      "lat": 42.3677139,
+                      "lng": -83.073853
+                    }
+                  }
+                },
+                "summary": {
+                  "duration": 77,
+                  "length": 545,
+                  "baseDuration": 77
+                },
+                "polyline": "BGm135wCvksu-EhErNnLvlBoQ3I0KnG0evRsYzPgPrJgPjNkIzFgPjIkIzFkSvMoQwqBsEwMsOwlB-E8M",
+                "spans": [
+                  {
+                    "offset": 0,
+                    "speedLimit": 11.1111116,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 7.5,
+                      "baseSpeed": 7.5,
+                      "turnTime": 3
+                    }
+                  },
+                  {
+                    "offset": 2,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 7.5,
+                      "baseSpeed": 7.5,
+                      "turnTime": 2
+                    }
+                  },
+                  {
+                    "offset": 12,
+                    "speedLimit": 11.1111116,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 7.5,
+                      "baseSpeed": 7.5,
+                      "turnTime": 0
+                    }
+                  }
+                ],
+                "language": "en-us",
+                "transport": {
+                  "mode": "car"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "timestamp": "2025-07-07T19:10:17.851386"
+    },
+    {
+      "segment_id": 4,
+      "request_params": {
+        "apikey": "uUFZJMYlitfRsDjEJIHqZ1fWoc6jhycasfFwsIBlhWs",
+        "transportMode": "car",
+        "origin": "42.367714,-83.073853",
+        "destination": "42.369294,-83.072061",
+        "return": "polyline,summary,actions,instructions",
+        "spans": "speedLimit,dynamicSpeedInfo"
+      },
+      "response_data": {
+        "routes": [
+          {
+            "id": "ba4083e8-c8c3-4391-83e0-93e1751ff7c5",
+            "sections": [
+              {
+                "id": "e7ed9562-8aab-4d89-834a-89b463eb22b7",
+                "type": "vehicle",
+                "actions": [
+                  {
+                    "action": "depart",
+                    "duration": 14,
+                    "length": 29,
+                    "instruction": "Head toward Cass Ave on W Baltimore Ave. Go for 29 m.",
+                    "offset": 0
+                  },
+                  {
+                    "action": "turn",
+                    "duration": 18,
+                    "length": 87,
+                    "instruction": "Turn left onto Cass Ave. Go for 87 m.",
+                    "offset": 2,
+                    "direction": "left",
+                    "severity": "quite"
+                  },
+                  {
+                    "action": "turn",
+                    "duration": 42,
+                    "length": 138,
+                    "instruction": "Turn right onto Milwaukee St W. Go for 138 m.",
+                    "offset": 3,
+                    "direction": "right",
+                    "severity": "quite"
+                  },
+                  {
+                    "action": "continue",
+                    "duration": 9,
+                    "length": 44,
+                    "instruction": "Continue on Milwaukee St E. Go for 44 m.",
+                    "offset": 5
+                  },
+                  {
+                    "action": "arrive",
+                    "duration": 0,
+                    "length": 0,
+                    "instruction": "Arrive at Milwaukee St E.",
+                    "offset": 6
+                  }
+                ],
+                "departure": {
+                  "time": "2025-07-07T19:10:23-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3677292,
+                      "lng": -83.0738639
+                    },
+                    "originalLocation": {
+                      "lat": 42.3677139,
+                      "lng": -83.073853
+                    }
+                  }
+                },
+                "arrival": {
+                  "time": "2025-07-07T19:11:46-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3692933,
+                      "lng": -83.0720609
+                    },
+                    "originalLocation": {
+                      "lat": 42.3692939,
+                      "lng": -83.0720611
+                    }
+                  }
+                },
+                "summary": {
+                  "duration": 83,
+                  "length": 298,
+                  "baseDuration": 79
+                },
+                "polyline": "BGiv95wCv0tu-EuEwLkDkI4rB_dgUozB0P8pB6K-d",
+                "spans": [
+                  {
+                    "offset": 0,
+                    "speedLimit": 11.1111116,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 7.5,
+                      "baseSpeed": 7.5,
+                      "turnTime": 10
+                    }
+                  },
+                  {
+                    "offset": 2,
+                    "speedLimit": 11.1111116,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 5.2777781,
+                      "baseSpeed": 7.5,
+                      "turnTime": 2
+                    }
+                  },
+                  {
+                    "offset": 3,
+                    "speedLimit": 11.1111116,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 5.0,
+                      "baseSpeed": 5.0,
+                      "turnTime": 15
+                    }
+                  },
+                  {
+                    "offset": 5,
+                    "speedLimit": 11.1111116,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 5.0,
+                      "baseSpeed": 5.0,
+                      "turnTime": 0
+                    }
+                  }
+                ],
+                "language": "en-us",
+                "transport": {
+                  "mode": "car"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "timestamp": "2025-07-07T19:10:18.075945"
+    },
+    {
+      "segment_id": 5,
+      "request_params": {
+        "apikey": "uUFZJMYlitfRsDjEJIHqZ1fWoc6jhycasfFwsIBlhWs",
+        "transportMode": "car",
+        "origin": "42.369294,-83.072061",
+        "destination": "42.369360,-83.072644",
+        "return": "polyline,summary,actions,instructions",
+        "spans": "speedLimit,dynamicSpeedInfo"
+      },
+      "response_data": {
+        "routes": [
+          {
+            "id": "560510bd-1d5e-4a99-8822-a5c764a9a6ea",
+            "sections": [
+              {
+                "id": "80b6fbf1-84d6-4591-8f2f-362c39419f99",
+                "type": "vehicle",
+                "actions": [
+                  {
+                    "action": "depart",
+                    "duration": 16,
+                    "length": 44,
+                    "instruction": "Head toward Milwaukee St W on Milwaukee St E. Go for 44 m.",
+                    "offset": 0
+                  },
+                  {
+                    "action": "turn",
+                    "duration": 3,
+                    "length": 28,
+                    "instruction": "Turn right onto Woodward Ave (M-1). Go for 28 m.",
+                    "offset": 1,
+                    "direction": "right",
+                    "severity": "quite"
+                  },
+                  {
+                    "action": "arrive",
+                    "duration": 0,
+                    "length": 0,
+                    "instruction": "Arrive at Woodward Ave (M-1). Your destination is on the right.",
+                    "offset": 2
+                  }
+                ],
+                "departure": {
+                  "time": "2025-07-07T19:10:23-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3692933,
+                      "lng": -83.0720609
+                    },
+                    "originalLocation": {
+                      "lat": 42.3692939,
+                      "lng": -83.0720611
+                    }
+                  }
+                },
+                "arrival": {
+                  "time": "2025-07-07T19:10:42-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.369343,
+                      "lng": -83.07269
+                    },
+                    "originalLocation": {
+                      "lat": 42.36936,
+                      "lng": -83.072644
+                    }
+                  }
+                },
+                "summary": {
+                  "duration": 19,
+                  "length": 72,
+                  "baseDuration": 18
+                },
+                "polyline": "BG6wg6wC5jqu-E5K9d-NrJ",
+                "spans": [
+                  {
+                    "offset": 0,
+                    "speedLimit": 6.666667,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 5.0,
+                      "baseSpeed": 5.0,
+                      "turnTime": 7
+                    }
+                  },
+                  {
+                    "offset": 1,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 10.5555563,
+                      "baseSpeed": 12.2222223,
+                      "turnTime": 0
+                    }
+                  }
+                ],
+                "language": "en-us",
+                "transport": {
+                  "mode": "car"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "timestamp": "2025-07-07T19:10:18.312079"
+    },
+    {
+      "segment_id": 6,
+      "request_params": {
+        "apikey": "uUFZJMYlitfRsDjEJIHqZ1fWoc6jhycasfFwsIBlhWs",
+        "transportMode": "car",
+        "origin": "42.369360,-83.072644",
+        "destination": "42.373677,-83.075544",
+        "return": "polyline,summary,actions,instructions",
+        "spans": "speedLimit,dynamicSpeedInfo"
+      },
+      "response_data": {
+        "routes": [
+          {
+            "id": "9a06cf86-8316-49bf-8087-8cf11d57e2a2",
+            "sections": [
+              {
+                "id": "ab6941e1-5c0d-4af0-a867-d90cb99a9915",
+                "type": "vehicle",
+                "actions": [
+                  {
+                    "action": "depart",
+                    "duration": 38,
+                    "length": 535,
+                    "instruction": "Head toward Grand Blvd E on Woodward Ave (M-1). Go for 535 m.",
+                    "offset": 0
+                  },
+                  {
+                    "action": "arrive",
+                    "duration": 0,
+                    "length": 0,
+                    "instruction": "Arrive at Woodward Ave (M-1).",
+                    "offset": 13
+                  }
+                ],
+                "departure": {
+                  "time": "2025-07-07T19:10:24-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.369343,
+                      "lng": -83.07269
+                    },
+                    "originalLocation": {
+                      "lat": 42.36936,
+                      "lng": -83.072644
+                    }
+                  }
+                },
+                "arrival": {
+                  "time": "2025-07-07T19:11:02-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3736734,
+                      "lng": -83.0755537
+                    },
+                    "originalLocation": {
+                      "lat": 42.373677,
+                      "lng": -83.0755441
+                    }
+                  }
+                },
+                "summary": {
+                  "duration": 38,
+                  "length": 535,
+                  "baseDuration": 42
+                },
+                "polyline": "BG-zg6wCjrru-E-b3S4XzP8LjI0tBjcgenV4IzFoL7GwMjIgPrJwH_Esd_TgZ7QiWnP",
+                "spans": [
+                  {
+                    "offset": 0,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 10.5555563,
+                      "baseSpeed": 12.2222223,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 1,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 10.5555563,
+                      "baseSpeed": 12.7777777,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 2,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 10.5555563,
+                      "baseSpeed": 13.333334,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 3,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 15.0,
+                      "baseSpeed": 12.7777777,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 4,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 15.0,
+                      "baseSpeed": 10.0,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 5,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 15.0,
+                      "baseSpeed": 13.6111116,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 6,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 15.0,
+                      "baseSpeed": 13.333334,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 7,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 15.0,
+                      "baseSpeed": 14.166667,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 9,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 15.0,
+                      "baseSpeed": 15.0,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 10,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 15.0,
+                      "baseSpeed": 15.2777786,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 11,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 15.0,
+                      "baseSpeed": 15.5555563,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 12,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 15.0,
+                      "baseSpeed": 16.1111107,
+                      "turnTime": 0
+                    }
+                  }
+                ],
+                "language": "en-us",
+                "transport": {
+                  "mode": "car"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "timestamp": "2025-07-07T19:10:18.555413"
+    },
+    {
+      "segment_id": 7,
+      "request_params": {
+        "apikey": "uUFZJMYlitfRsDjEJIHqZ1fWoc6jhycasfFwsIBlhWs",
+        "transportMode": "car",
+        "origin": "42.373677,-83.075544",
+        "destination": "42.376731,-83.079118",
+        "return": "polyline,summary,actions,instructions",
+        "spans": "speedLimit,dynamicSpeedInfo"
+      },
+      "response_data": {
+        "routes": [
+          {
+            "id": "74a29b34-c10b-49ec-8a3b-74034964b2bb",
+            "sections": [
+              {
+                "id": "940dec56-1a0f-4e05-8909-62ec159d1005",
+                "type": "vehicle",
+                "actions": [
+                  {
+                    "action": "depart",
+                    "duration": 40,
+                    "length": 437,
+                    "instruction": "Head toward Chandler St on Woodward Ave (M-1). Go for 437 m.",
+                    "offset": 0
+                  },
+                  {
+                    "action": "turn",
+                    "duration": 15,
+                    "length": 111,
+                    "instruction": "Turn left onto Euclid St W. Go for 111 m.",
+                    "offset": 12,
+                    "direction": "left",
+                    "severity": "quite"
+                  },
+                  {
+                    "action": "arrive",
+                    "duration": 0,
+                    "length": 0,
+                    "instruction": "Arrive at Euclid St W.",
+                    "offset": 14
+                  }
+                ],
+                "departure": {
+                  "time": "2025-07-07T19:10:24-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3736734,
+                      "lng": -83.0755537
+                    },
+                    "originalLocation": {
+                      "lat": 42.373677,
+                      "lng": -83.0755441
+                    }
+                  }
+                },
+                "arrival": {
+                  "time": "2025-07-07T19:11:19-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3767324,
+                      "lng": -83.0791191
+                    },
+                    "originalLocation": {
+                      "lat": 42.3767309,
+                      "lng": -83.079118
+                    }
+                  }
+                },
+                "summary": {
+                  "duration": 55,
+                  "length": 548,
+                  "baseDuration": 54
+                },
+                "polyline": "BGyip6wCj-wu-EmYzQkrB3c0K7GwMjIgK7G4N3I8LjI0UrOoajSgUjN8LjIsO_JnV74B3GhS",
+                "spans": [
+                  {
+                    "offset": 0,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 15.0,
+                      "baseSpeed": 16.1111107,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 4,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 15.0,
+                      "baseSpeed": 16.3888893,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 5,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 15.0,
+                      "baseSpeed": 16.1111107,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 6,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 15.0,
+                      "baseSpeed": 15.5555563,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 7,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 15.0,
+                      "baseSpeed": 15.833334,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 10,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 15.0,
+                      "baseSpeed": 15.0,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 11,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 15.0,
+                      "baseSpeed": 14.166667,
+                      "turnTime": 10
+                    }
+                  },
+                  {
+                    "offset": 12,
+                    "speedLimit": 11.1111116,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 7.5,
+                      "baseSpeed": 7.5,
+                      "turnTime": 0
+                    }
+                  }
+                ],
+                "language": "en-us",
+                "transport": {
+                  "mode": "car"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "timestamp": "2025-07-07T19:10:18.791881"
+    },
+    {
+      "segment_id": 8,
+      "request_params": {
+        "apikey": "uUFZJMYlitfRsDjEJIHqZ1fWoc6jhycasfFwsIBlhWs",
+        "transportMode": "car",
+        "origin": "42.376731,-83.079118",
+        "destination": "42.374599,-83.084952",
+        "return": "polyline,summary,actions,instructions",
+        "spans": "speedLimit,dynamicSpeedInfo"
+      },
+      "response_data": {
+        "routes": [
+          {
+            "id": "9e74a4d9-674b-4423-bd17-47f63fe576f5",
+            "sections": [
+              {
+                "id": "fed33e7b-1e19-4654-97b9-49b3de6b82fc",
+                "type": "vehicle",
+                "actions": [
+                  {
+                    "action": "depart",
+                    "duration": 71,
+                    "length": 535,
+                    "instruction": "Head toward 2nd Ave on Euclid St W. Go for 535 m.",
+                    "offset": 0
+                  },
+                  {
+                    "action": "arrive",
+                    "duration": 0,
+                    "length": 0,
+                    "instruction": "Arrive at Euclid St W. Your destination is on the right.",
+                    "offset": 3
+                  }
+                ],
+                "departure": {
+                  "time": "2025-07-07T19:10:24-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3767324,
+                      "lng": -83.0791191
+                    },
+                    "originalLocation": {
+                      "lat": 42.3767309,
+                      "lng": -83.079118
+                    }
+                  }
+                },
+                "arrival": {
+                  "time": "2025-07-07T19:11:35-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3745843,
+                      "lng": -83.084942
+                    },
+                    "originalLocation": {
+                      "lat": 42.374599,
+                      "lng": -83.084952
+                    }
+                  }
+                },
+                "summary": {
+                  "duration": 71,
+                  "length": 535,
+                  "baseDuration": 71
+                },
+                "polyline": "BG4hv6wC983u-E_pBlxDjkCn6FjYvgC",
+                "spans": [
+                  {
+                    "offset": 0,
+                    "speedLimit": 11.1111116,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 7.5,
+                      "baseSpeed": 7.5,
+                      "turnTime": 0
+                    }
+                  }
+                ],
+                "language": "en-us",
+                "transport": {
+                  "mode": "car"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "timestamp": "2025-07-07T19:10:18.978007"
+    },
+    {
+      "segment_id": 9,
+      "request_params": {
+        "apikey": "uUFZJMYlitfRsDjEJIHqZ1fWoc6jhycasfFwsIBlhWs",
+        "transportMode": "car",
+        "origin": "42.374599,-83.084952",
+        "destination": "42.372430,-83.090750",
+        "return": "polyline,summary,actions,instructions",
+        "spans": "speedLimit,dynamicSpeedInfo"
+      },
+      "response_data": {
+        "routes": [
+          {
+            "id": "e993b619-2582-4ecb-9030-598a0fc2c588",
+            "sections": [
+              {
+                "id": "da0220bb-6a06-4553-870b-44bb2e2ea012",
+                "type": "vehicle",
+                "actions": [
+                  {
+                    "action": "depart",
+                    "duration": 29,
+                    "length": 100,
+                    "instruction": "Head toward John C Lodge Fwy on Euclid St W. Go for 100 m.",
+                    "offset": 0
+                  },
+                  {
+                    "action": "continue",
+                    "duration": 25,
+                    "length": 78,
+                    "instruction": "Continue on Euclid St W. Go for 78 m.",
+                    "offset": 2
+                  },
+                  {
+                    "action": "continue",
+                    "duration": 47,
+                    "length": 356,
+                    "instruction": "Continue on Euclid St W. Go for 356 m.",
+                    "offset": 4
+                  },
+                  {
+                    "action": "arrive",
+                    "duration": 0,
+                    "length": 0,
+                    "instruction": "Arrive at Euclid St W.",
+                    "offset": 6
+                  }
+                ],
+                "departure": {
+                  "time": "2025-07-07T19:10:24-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3745843,
+                      "lng": -83.084942
+                    },
+                    "originalLocation": {
+                      "lat": 42.374599,
+                      "lng": -83.084952
+                    }
+                  }
+                },
+                "arrival": {
+                  "time": "2025-07-07T19:12:05-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3724206,
+                      "lng": -83.090744
+                    },
+                    "originalLocation": {
+                      "lat": 42.3724299,
+                      "lng": -83.09075
+                    }
+                  }
+                },
+                "summary": {
+                  "duration": 101,
+                  "length": 534,
+                  "baseDuration": 101
+                },
+                "polyline": "BGw7q6wC7ojv-EnUn2B_E3NjNnfvHnV7iC_zFtWj-B",
+                "spans": [
+                  {
+                    "offset": 0,
+                    "speedLimit": 11.1111116,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 7.5,
+                      "baseSpeed": 7.5,
+                      "turnTime": 15
+                    }
+                  },
+                  {
+                    "offset": 2,
+                    "speedLimit": 11.1111116,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 7.5,
+                      "baseSpeed": 7.5,
+                      "turnTime": 15
+                    }
+                  },
+                  {
+                    "offset": 4,
+                    "speedLimit": 11.1111116,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 7.5,
+                      "baseSpeed": 7.5,
+                      "turnTime": 0
+                    }
+                  }
+                ],
+                "language": "en-us",
+                "transport": {
+                  "mode": "car"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "timestamp": "2025-07-07T19:10:19.230598"
+    },
+    {
+      "segment_id": 10,
+      "request_params": {
+        "apikey": "uUFZJMYlitfRsDjEJIHqZ1fWoc6jhycasfFwsIBlhWs",
+        "transportMode": "car",
+        "origin": "42.372430,-83.090750",
+        "destination": "42.370339,-83.096608",
+        "return": "polyline,summary,actions,instructions",
+        "spans": "speedLimit,dynamicSpeedInfo"
+      },
+      "response_data": {
+        "routes": [
+          {
+            "id": "2dbea3fa-fdc8-430f-8381-447db47289a6",
+            "sections": [
+              {
+                "id": "6d3ac412-243d-467b-9123-4bd59001ad0f",
+                "type": "vehicle",
+                "actions": [
+                  {
+                    "action": "depart",
+                    "duration": 74,
+                    "length": 535,
+                    "instruction": "Head toward Woodrow Wilson St on Euclid St W. Go for 535 m.",
+                    "offset": 0
+                  },
+                  {
+                    "action": "arrive",
+                    "duration": 0,
+                    "length": 0,
+                    "instruction": "Arrive at Euclid St W.",
+                    "offset": 6
+                  }
+                ],
+                "departure": {
+                  "time": "2025-07-07T19:10:24-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3724206,
+                      "lng": -83.090744
+                    },
+                    "originalLocation": {
+                      "lat": 42.3724299,
+                      "lng": -83.09075
+                    }
+                  }
+                },
+                "arrival": {
+                  "time": "2025-07-07T19:11:38-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3703299,
+                      "lng": -83.09659
+                    },
+                    "originalLocation": {
+                      "lat": 42.370339,
+                      "lng": -83.0966081
+                    }
+                  }
+                },
+                "summary": {
+                  "duration": 74,
+                  "length": 535,
+                  "baseDuration": 74
+                },
+                "polyline": "BGq0m6wCvzuv-EtsB76D_7BviFnBvM3N7kBvCzF3I_Y",
+                "spans": [
+                  {
+                    "offset": 0,
+                    "speedLimit": 11.1111116,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 7.5,
+                      "baseSpeed": 7.5,
+                      "turnTime": 1
+                    }
+                  },
+                  {
+                    "offset": 2,
+                    "speedLimit": 11.1111116,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 7.5,
+                      "baseSpeed": 7.5,
+                      "turnTime": 2
+                    }
+                  },
+                  {
+                    "offset": 3,
+                    "speedLimit": 11.1111116,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 7.5,
+                      "baseSpeed": 7.5,
+                      "turnTime": 0
+                    }
+                  }
+                ],
+                "language": "en-us",
+                "transport": {
+                  "mode": "car"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "timestamp": "2025-07-07T19:10:19.460819"
+    },
+    {
+      "segment_id": 11,
+      "request_params": {
+        "apikey": "uUFZJMYlitfRsDjEJIHqZ1fWoc6jhycasfFwsIBlhWs",
+        "transportMode": "car",
+        "origin": "42.370339,-83.096608",
+        "destination": "42.368131,-83.102381",
+        "return": "polyline,summary,actions,instructions",
+        "spans": "speedLimit,dynamicSpeedInfo"
+      },
+      "response_data": {
+        "routes": [
+          {
+            "id": "b75e3261-6c36-4858-82e6-2c71bb488a49",
+            "sections": [
+              {
+                "id": "73562d92-a6cc-41ae-95cb-a80316665480",
+                "type": "vehicle",
+                "actions": [
+                  {
+                    "action": "depart",
+                    "duration": 73,
+                    "length": 536,
+                    "instruction": "Head southwest on Euclid St W. Go for 536 m.",
+                    "offset": 0
+                  },
+                  {
+                    "action": "arrive",
+                    "duration": 0,
+                    "length": 0,
+                    "instruction": "Arrive at Euclid St W.",
+                    "offset": 10
+                  }
+                ],
+                "departure": {
+                  "time": "2025-07-07T19:10:25-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3703299,
+                      "lng": -83.09659
+                    },
+                    "originalLocation": {
+                      "lat": 42.370339,
+                      "lng": -83.0966081
+                    }
+                  }
+                },
+                "arrival": {
+                  "time": "2025-07-07T19:11:38-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3681422,
+                      "lng": -83.1023889
+                    },
+                    "originalLocation": {
+                      "lat": 42.3681309,
+                      "lng": -83.102381
+                    }
+                  }
+                },
+                "summary": {
+                  "duration": 73,
+                  "length": 536,
+                  "baseDuration": 73
+                },
+                "polyline": "BG0xi6wC7g6v-E_ErO7Q3rB7GzUrE3N_EvM7Vj1B_sB_3D3N7kB7LnfjGlQ",
+                "spans": [
+                  {
+                    "offset": 0,
+                    "speedLimit": 11.1111116,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 7.5,
+                      "baseSpeed": 7.5,
+                      "turnTime": 0
+                    }
+                  }
+                ],
+                "language": "en-us",
+                "transport": {
+                  "mode": "car"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "timestamp": "2025-07-07T19:10:19.642170"
+    },
+    {
+      "segment_id": 12,
+      "request_params": {
+        "apikey": "uUFZJMYlitfRsDjEJIHqZ1fWoc6jhycasfFwsIBlhWs",
+        "transportMode": "car",
+        "origin": "42.368131,-83.102381",
+        "destination": "42.364624,-83.102877",
+        "return": "polyline,summary,actions,instructions",
+        "spans": "speedLimit,dynamicSpeedInfo"
+      },
+      "response_data": {
+        "routes": [
+          {
+            "id": "f32d8034-8cdb-4891-99a3-b24dc13e79f0",
+            "sections": [
+              {
+                "id": "4d1ceaf8-8172-4db9-80d2-4baa81f42f76",
+                "type": "vehicle",
+                "actions": [
+                  {
+                    "action": "depart",
+                    "duration": 47,
+                    "length": 207,
+                    "instruction": "Head southwest on Euclid St W. Go for 207 m.",
+                    "offset": 0
+                  },
+                  {
+                    "action": "turn",
+                    "duration": 29,
+                    "length": 333,
+                    "instruction": "Turn left onto Linwood St. Go for 333 m.",
+                    "offset": 4,
+                    "direction": "left",
+                    "severity": "quite"
+                  },
+                  {
+                    "action": "arrive",
+                    "duration": 0,
+                    "length": 0,
+                    "instruction": "Arrive at Linwood St. Your destination is on the right.",
+                    "offset": 14
+                  }
+                ],
+                "departure": {
+                  "time": "2025-07-07T19:10:25-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3681422,
+                      "lng": -83.1023889
+                    },
+                    "originalLocation": {
+                      "lat": 42.3681309,
+                      "lng": -83.102381
+                    }
+                  }
+                },
+                "arrival": {
+                  "time": "2025-07-07T19:11:41-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3646341,
+                      "lng": -83.1028484
+                    },
+                    "originalLocation": {
+                      "lat": 42.3646239,
+                      "lng": -83.102877
+                    }
+                  }
+                },
+                "summary": {
+                  "duration": 76,
+                  "length": 540,
+                  "baseDuration": 72
+                },
+                "polyline": "BG8o-5wCprlw-EvE9LvbzrCjIvWnLzerEkDzK8G_iBkXnGsEzF4DjhB8Vze0UvH0FzF4Djd8S",
+                "spans": [
+                  {
+                    "offset": 0,
+                    "speedLimit": 11.1111116,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 7.5,
+                      "baseSpeed": 7.5,
+                      "turnTime": 20
+                    }
+                  },
+                  {
+                    "offset": 4,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 11.3888893,
+                      "baseSpeed": 12.2222223,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 5,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 11.3888893,
+                      "baseSpeed": 12.5,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 6,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 11.3888893,
+                      "baseSpeed": 12.7777777,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 7,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 11.3888893,
+                      "baseSpeed": 13.8888893,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 8,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 11.3888893,
+                      "baseSpeed": 14.166667,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 10,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 11.3888893,
+                      "baseSpeed": 15.5555563,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 11,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 11.3888893,
+                      "baseSpeed": 15.833334,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 12,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 11.3888893,
+                      "baseSpeed": 15.2777786,
+                      "turnTime": 0
+                    }
+                  }
+                ],
+                "language": "en-us",
+                "transport": {
+                  "mode": "car"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "timestamp": "2025-07-07T19:10:19.824016"
+    },
+    {
+      "segment_id": 13,
+      "request_params": {
+        "apikey": "uUFZJMYlitfRsDjEJIHqZ1fWoc6jhycasfFwsIBlhWs",
+        "transportMode": "car",
+        "origin": "42.364624,-83.102877",
+        "destination": "42.360337,-83.099925",
+        "return": "polyline,summary,actions,instructions",
+        "spans": "speedLimit,dynamicSpeedInfo"
+      },
+      "response_data": {
+        "routes": [
+          {
+            "id": "14a75189-fb69-4eb1-b5be-0a1fe5190757",
+            "sections": [
+              {
+                "id": "35a91699-274f-40b2-951e-06e0a4253d45",
+                "type": "vehicle",
+                "actions": [
+                  {
+                    "action": "depart",
+                    "duration": 47,
+                    "length": 538,
+                    "instruction": "Head toward Columbus St on Linwood St. Go for 538 m.",
+                    "offset": 0
+                  },
+                  {
+                    "action": "arrive",
+                    "duration": 0,
+                    "length": 0,
+                    "instruction": "Arrive at Linwood St. Your destination is on the left.",
+                    "offset": 11
+                  }
+                ],
+                "departure": {
+                  "time": "2025-07-07T19:10:25-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3646341,
+                      "lng": -83.1028484
+                    },
+                    "originalLocation": {
+                      "lat": 42.3646239,
+                      "lng": -83.102877
+                    }
+                  }
+                },
+                "arrival": {
+                  "time": "2025-07-07T19:11:12-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3602899,
+                      "lng": -83.09994
+                    },
+                    "originalLocation": {
+                      "lat": 42.3603369,
+                      "lng": -83.099925
+                    }
+                  }
+                },
+                "summary": {
+                  "duration": 47,
+                  "length": 538,
+                  "baseDuration": 42
+                },
+                "polyline": "BG0t35wC_nmw-EnP8JnawRzU4NnuBofvHgF7kBsYvlBgZzKwHrYoQvlBgZ3IoG",
+                "spans": [
+                  {
+                    "offset": 0,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 11.3888893,
+                      "baseSpeed": 15.2777786,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 1,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 11.3888893,
+                      "baseSpeed": 15.833334,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 5,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 11.3888893,
+                      "baseSpeed": 15.5555563,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 6,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 11.3888893,
+                      "baseSpeed": 14.7222223,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 7,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 11.3888893,
+                      "baseSpeed": 13.0555563,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 8,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 11.3888893,
+                      "baseSpeed": 12.5,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 9,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 11.3888893,
+                      "baseSpeed": 8.0555553,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 10,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 11.3888893,
+                      "baseSpeed": 11.1111116,
+                      "turnTime": 0
+                    }
+                  }
+                ],
+                "language": "en-us",
+                "transport": {
+                  "mode": "car"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "timestamp": "2025-07-07T19:10:20.067846"
+    },
+    {
+      "segment_id": 14,
+      "request_params": {
+        "apikey": "uUFZJMYlitfRsDjEJIHqZ1fWoc6jhycasfFwsIBlhWs",
+        "transportMode": "car",
+        "origin": "42.360337,-83.099925",
+        "destination": "42.362441,-83.094106",
+        "return": "polyline,summary,actions,instructions",
+        "spans": "speedLimit,dynamicSpeedInfo"
+      },
+      "response_data": {
+        "routes": [
+          {
+            "id": "92d737dd-ace5-4fc1-a9cc-2f6575a7b6c9",
+            "sections": [
+              {
+                "id": "761f4f88-fb8a-47d0-9b9e-de14a229f91a",
+                "type": "vehicle",
+                "actions": [
+                  {
+                    "action": "depart",
+                    "duration": 34,
+                    "length": 537,
+                    "instruction": "Head toward Stanton St on Grand Blvd W. Go for 537 m.",
+                    "offset": 0
+                  },
+                  {
+                    "action": "arrive",
+                    "duration": 0,
+                    "length": 0,
+                    "instruction": "Arrive at Grand Blvd W. Your destination is on the right.",
+                    "offset": 10
+                  }
+                ],
+                "departure": {
+                  "time": "2025-07-07T19:10:25-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3602899,
+                      "lng": -83.09994
+                    },
+                    "originalLocation": {
+                      "lat": 42.3603369,
+                      "lng": -83.099925
+                    }
+                  }
+                },
+                "arrival": {
+                  "time": "2025-07-07T19:10:59-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3624696,
+                      "lng": -83.0941255
+                    },
+                    "originalLocation": {
+                      "lat": 42.362441,
+                      "lng": -83.0941061
+                    }
+                  }
+                },
+                "summary": {
+                  "duration": 34,
+                  "length": 537,
+                  "baseDuration": 35
+                },
+                "polyline": "BGk-u5wCnygw-EsO0jBoLwb8GkSgFgPgZ0hCgFsOwM4hB0FgPwqBo0DkIkW",
+                "spans": [
+                  {
+                    "offset": 0,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 15.0,
+                      "baseSpeed": 14.166667,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 1,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 15.0,
+                      "baseSpeed": 15.0,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 2,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 15.0,
+                      "baseSpeed": 16.3888893,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 3,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 15.0,
+                      "baseSpeed": 16.6666679,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 4,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 15.0,
+                      "baseSpeed": 16.9444447,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 5,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 15.0,
+                      "baseSpeed": 16.6666679,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 6,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 15.0,
+                      "baseSpeed": 16.9444447,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 7,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 15.0,
+                      "baseSpeed": 16.3888893,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 8,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 15.0,
+                      "baseSpeed": 13.8888893,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 9,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 13.8888893,
+                      "baseSpeed": 14.4444447,
+                      "turnTime": 0
+                    }
+                  }
+                ],
+                "language": "en-us",
+                "transport": {
+                  "mode": "car"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "timestamp": "2025-07-07T19:10:20.303707"
+    },
+    {
+      "segment_id": 15,
+      "request_params": {
+        "apikey": "uUFZJMYlitfRsDjEJIHqZ1fWoc6jhycasfFwsIBlhWs",
+        "transportMode": "car",
+        "origin": "42.362441,-83.094106",
+        "destination": "42.364582,-83.088284",
+        "return": "polyline,summary,actions,instructions",
+        "spans": "speedLimit,dynamicSpeedInfo"
+      },
+      "response_data": {
+        "routes": [
+          {
+            "id": "3568206f-99f5-41c8-ba6a-2315c61b31d3",
+            "sections": [
+              {
+                "id": "f46d922e-99b7-45ad-8419-d211b2cbde17",
+                "type": "vehicle",
+                "actions": [
+                  {
+                    "action": "depart",
+                    "duration": 40,
+                    "length": 535,
+                    "instruction": "Head toward Hanover St on Grand Blvd W. Go for 535 m.",
+                    "offset": 0
+                  },
+                  {
+                    "action": "arrive",
+                    "duration": 0,
+                    "length": 0,
+                    "instruction": "Arrive at Grand Blvd W.",
+                    "offset": 14
+                  }
+                ],
+                "departure": {
+                  "time": "2025-07-07T19:10:26-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3624696,
+                      "lng": -83.0941255
+                    },
+                    "originalLocation": {
+                      "lat": 42.362441,
+                      "lng": -83.0941061
+                    }
+                  }
+                },
+                "arrival": {
+                  "time": "2025-07-07T19:11:06-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3645651,
+                      "lng": -83.0882723
+                    },
+                    "originalLocation": {
+                      "lat": 42.364582,
+                      "lng": -83.0882841
+                    }
+                  }
+                },
+                "summary": {
+                  "duration": 40,
+                  "length": 535,
+                  "baseDuration": 41
+                },
+                "polyline": "BGsmz5wC7m1v-EoBwD0FsOoGkS8GkSwMof0ZonCkNwlBgPgoBsO4mBwC8Q8GoVwHsTgF4NuI4V",
+                "spans": [
+                  {
+                    "offset": 0,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 13.8888893,
+                      "baseSpeed": 14.4444447,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 1,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 13.8888893,
+                      "baseSpeed": 14.166667,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 2,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 13.8888893,
+                      "baseSpeed": 14.7222223,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 3,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 13.8888893,
+                      "baseSpeed": 14.166667,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 4,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 13.8888893,
+                      "baseSpeed": 14.4444447,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 5,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 13.8888893,
+                      "baseSpeed": 12.7777777,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 6,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 13.8888893,
+                      "baseSpeed": 9.4444447,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 7,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 12.7777777,
+                      "baseSpeed": 11.666667,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 8,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 12.7777777,
+                      "baseSpeed": 11.1111116,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 9,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 12.7777777,
+                      "baseSpeed": 12.7777777,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 12,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 12.7777777,
+                      "baseSpeed": 14.4444447,
+                      "turnTime": 0
+                    }
+                  }
+                ],
+                "language": "en-us",
+                "transport": {
+                  "mode": "car"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "timestamp": "2025-07-07T19:10:20.544164"
+    },
+    {
+      "segment_id": 16,
+      "request_params": {
+        "apikey": "uUFZJMYlitfRsDjEJIHqZ1fWoc6jhycasfFwsIBlhWs",
+        "transportMode": "car",
+        "origin": "42.364582,-83.088284",
+        "destination": "42.368196,-83.088436",
+        "return": "polyline,summary,actions,instructions",
+        "spans": "speedLimit,dynamicSpeedInfo"
+      },
+      "response_data": {
+        "routes": [
+          {
+            "id": "81c372b3-7741-4a4c-b868-86814e78cf84",
+            "sections": [
+              {
+                "id": "edca28e6-ae27-4094-bcb8-31f2d4d7bf75",
+                "type": "vehicle",
+                "actions": [
+                  {
+                    "action": "depart",
+                    "duration": 23,
+                    "length": 175,
+                    "instruction": "Head toward Kipling St on Grand Blvd W. Go for 175 m.",
+                    "offset": 0
+                  },
+                  {
+                    "action": "turn",
+                    "duration": 58,
+                    "length": 365,
+                    "instruction": "Turn left onto Poe St. Go for 365 m.",
+                    "offset": 5,
+                    "direction": "left",
+                    "severity": "quite"
+                  },
+                  {
+                    "action": "arrive",
+                    "duration": 0,
+                    "length": 0,
+                    "instruction": "Arrive at Poe St. Your destination is on the right.",
+                    "offset": 13
+                  }
+                ],
+                "departure": {
+                  "time": "2025-07-07T19:10:26-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3645651,
+                      "lng": -83.0882723
+                    },
+                    "originalLocation": {
+                      "lat": 42.364582,
+                      "lng": -83.0882841
+                    }
+                  }
+                },
+                "arrival": {
+                  "time": "2025-07-07T19:11:47-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3681853,
+                      "lng": -83.0884627
+                    },
+                    "originalLocation": {
+                      "lat": 42.368196,
+                      "lng": -83.088436
+                    }
+                  }
+                },
+                "summary": {
+                  "duration": 81,
+                  "length": 540,
+                  "baseDuration": 79
+                },
+                "polyline": "BGqp35wC_4pv-EyQ0qBwHgUoLge0FsOsEwM4IzF4NvHkS3NsTvM0KvHsJvMwtC_2BuXhR",
+                "spans": [
+                  {
+                    "offset": 0,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 12.7777777,
+                      "baseSpeed": 14.4444447,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 1,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 12.7777777,
+                      "baseSpeed": 15.0,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 2,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 12.7777777,
+                      "baseSpeed": 13.8888893,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 3,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 12.7777777,
+                      "baseSpeed": 14.166667,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 4,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 12.7777777,
+                      "baseSpeed": 13.333334,
+                      "turnTime": 10
+                    }
+                  },
+                  {
+                    "offset": 5,
+                    "speedLimit": 11.1111116,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 7.5,
+                      "baseSpeed": 7.5,
+                      "turnTime": 8
+                    }
+                  },
+                  {
+                    "offset": 6,
+                    "speedLimit": 11.1111116,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 7.5,
+                      "baseSpeed": 7.5,
+                      "turnTime": 2
+                    }
+                  },
+                  {
+                    "offset": 10,
+                    "speedLimit": 11.1111116,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 7.5,
+                      "baseSpeed": 7.5,
+                      "turnTime": 0
+                    }
+                  }
+                ],
+                "language": "en-us",
+                "transport": {
+                  "mode": "car"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "timestamp": "2025-07-07T19:10:20.774834"
+    },
+    {
+      "segment_id": 17,
+      "request_params": {
+        "apikey": "uUFZJMYlitfRsDjEJIHqZ1fWoc6jhycasfFwsIBlhWs",
+        "transportMode": "car",
+        "origin": "42.368196,-83.088436",
+        "destination": "42.369310,-83.083842",
+        "return": "polyline,summary,actions,instructions",
+        "spans": "speedLimit,dynamicSpeedInfo"
+      },
+      "response_data": {
+        "routes": [
+          {
+            "id": "a36bc210-64b1-418f-8e3d-de51b8916d08",
+            "sections": [
+              {
+                "id": "11f1b211-2c77-4b54-a966-544e19433f28",
+                "type": "vehicle",
+                "actions": [
+                  {
+                    "action": "depart",
+                    "duration": 9,
+                    "length": 45,
+                    "instruction": "Head toward Pallister St on Poe St. Go for 45 m.",
+                    "offset": 0
+                  },
+                  {
+                    "action": "turn",
+                    "duration": 60,
+                    "length": 395,
+                    "instruction": "Turn right onto Pallister St. Go for 395 m.",
+                    "offset": 1,
+                    "direction": "right",
+                    "severity": "quite"
+                  },
+                  {
+                    "action": "turn",
+                    "duration": 15,
+                    "length": 106,
+                    "instruction": "Turn right onto John C Lodge Fwy. Go for 106 m.",
+                    "offset": 7,
+                    "direction": "right",
+                    "severity": "quite"
+                  },
+                  {
+                    "action": "arrive",
+                    "duration": 0,
+                    "length": 0,
+                    "instruction": "Arrive at John C Lodge Fwy.",
+                    "offset": 9
+                  }
+                ],
+                "departure": {
+                  "time": "2025-07-07T19:10:26-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3681853,
+                      "lng": -83.0884627
+                    },
+                    "originalLocation": {
+                      "lat": 42.368196,
+                      "lng": -83.088436
+                    }
+                  }
+                },
+                "arrival": {
+                  "time": "2025-07-07T19:11:50-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3693099,
+                      "lng": -83.083842
+                    },
+                    "originalLocation": {
+                      "lat": 42.3693099,
+                      "lng": -83.0838421
+                    }
+                  }
+                },
+                "summary": {
+                  "duration": 84,
+                  "length": 546,
+                  "baseDuration": 80
+                },
+                "polyline": "BGyr-5wC9kqv-EmWhQoa0mCkhB44CsOwlB8BgFoLsdsOokB7uBkhBnGoE",
+                "spans": [
+                  {
+                    "offset": 0,
+                    "speedLimit": 11.1111116,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 7.5,
+                      "baseSpeed": 7.5,
+                      "turnTime": 3
+                    }
+                  },
+                  {
+                    "offset": 1,
+                    "speedLimit": 11.1111116,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 7.5,
+                      "baseSpeed": 7.5,
+                      "turnTime": 8
+                    }
+                  },
+                  {
+                    "offset": 7,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 7.5,
+                      "baseSpeed": 9.4444447,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 8,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 7.5,
+                      "baseSpeed": 11.3888893,
+                      "turnTime": 0
+                    }
+                  }
+                ],
+                "language": "en-us",
+                "transport": {
+                  "mode": "car"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "timestamp": "2025-07-07T19:10:21.019727"
+    },
+    {
+      "segment_id": 18,
+      "request_params": {
+        "apikey": "uUFZJMYlitfRsDjEJIHqZ1fWoc6jhycasfFwsIBlhWs",
+        "transportMode": "car",
+        "origin": "42.369310,-83.083842",
+        "destination": "42.368822,-83.081396",
+        "return": "polyline,summary,actions,instructions",
+        "spans": "speedLimit,dynamicSpeedInfo"
+      },
+      "response_data": {
+        "routes": [
+          {
+            "id": "ab513972-961e-4d94-916b-89fb23d979a7",
+            "sections": [
+              {
+                "id": "3258118f-634b-4a62-a4a2-e9721a8758c3",
+                "type": "vehicle",
+                "actions": [
+                  {
+                    "action": "depart",
+                    "duration": 39,
+                    "length": 263,
+                    "instruction": "Head southeast on John C Lodge Fwy. Go for 263 m.",
+                    "offset": 0
+                  },
+                  {
+                    "action": "uTurn",
+                    "duration": 33,
+                    "length": 198,
+                    "instruction": "Make a U-Turn onto John C Lodge Fwy. Go for 198 m.",
+                    "offset": 6,
+                    "direction": "left"
+                  },
+                  {
+                    "action": "turn",
+                    "duration": 11,
+                    "length": 83,
+                    "instruction": "Turn right onto Lothrop Rd. Go for 83 m.",
+                    "offset": 15,
+                    "direction": "right",
+                    "severity": "quite"
+                  },
+                  {
+                    "action": "arrive",
+                    "duration": 0,
+                    "length": 0,
+                    "instruction": "Arrive at Lothrop Rd.",
+                    "offset": 17
+                  }
+                ],
+                "departure": {
+                  "time": "2025-07-07T19:10:26-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3693099,
+                      "lng": -83.083842
+                    },
+                    "originalLocation": {
+                      "lat": 42.3693099,
+                      "lng": -83.0838421
+                    }
+                  }
+                },
+                "arrival": {
+                  "time": "2025-07-07T19:11:49-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3688224,
+                      "lng": -83.0813964
+                    },
+                    "originalLocation": {
+                      "lat": 42.3688219,
+                      "lng": -83.0813961
+                    }
+                  }
+                },
+                "summary": {
+                  "duration": 83,
+                  "length": 544,
+                  "baseDuration": 67
+                },
+                "polyline": "BG8xg6wCjkhv-ErToN_iBsY3IoG7GsEzUsOzoBkc7B4IU4I8BoGsEgKsE4IgF8BwHA4XnQ4hBvWkN0jBoI8U",
+                "spans": [
+                  {
+                    "offset": 0,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 7.5,
+                      "baseSpeed": 11.3888893,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 1,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 7.5,
+                      "baseSpeed": 12.2222223,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 5,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 7.5,
+                      "baseSpeed": 7.7777781,
+                      "turnTime": 5
+                    }
+                  },
+                  {
+                    "offset": 6,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 5.2777781,
+                      "baseSpeed": 6.666667,
+                      "turnTime": 3
+                    }
+                  },
+                  {
+                    "offset": 13,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 10.2777777,
+                      "baseSpeed": 12.2222223,
+                      "turnTime": 0
+                    }
+                  },
+                  {
+                    "offset": 14,
+                    "speedLimit": 13.333334,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 10.2777777,
+                      "baseSpeed": 13.6111116,
+                      "turnTime": 2
+                    }
+                  },
+                  {
+                    "offset": 15,
+                    "speedLimit": 11.1111116,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 7.5,
+                      "baseSpeed": 7.5,
+                      "turnTime": 0
+                    }
+                  }
+                ],
+                "language": "en-us",
+                "transport": {
+                  "mode": "car"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "timestamp": "2025-07-07T19:10:21.260177"
+    },
+    {
+      "segment_id": 19,
+      "request_params": {
+        "apikey": "uUFZJMYlitfRsDjEJIHqZ1fWoc6jhycasfFwsIBlhWs",
+        "transportMode": "car",
+        "origin": "42.368822,-83.081396",
+        "destination": "42.371002,-83.075601",
+        "return": "polyline,summary,actions,instructions",
+        "spans": "speedLimit,dynamicSpeedInfo"
+      },
+      "response_data": {
+        "routes": [
+          {
+            "id": "b514f4b8-78ed-40ba-af36-da22c411af87",
+            "sections": [
+              {
+                "id": "3f0330b4-db54-4d36-98a6-b5d4f005e35b",
+                "type": "vehicle",
+                "actions": [
+                  {
+                    "action": "depart",
+                    "duration": 72,
+                    "length": 536,
+                    "instruction": "Head toward Seville Row on Lothrop Rd. Go for 536 m.",
+                    "offset": 0
+                  },
+                  {
+                    "action": "arrive",
+                    "duration": 0,
+                    "length": 0,
+                    "instruction": "Arrive at Lothrop Rd. Your destination is on the right.",
+                    "offset": 15
+                  }
+                ],
+                "departure": {
+                  "time": "2025-07-07T19:10:26-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3688224,
+                      "lng": -83.0813964
+                    },
+                    "originalLocation": {
+                      "lat": 42.3688219,
+                      "lng": -83.0813961
+                    }
+                  }
+                },
+                "arrival": {
+                  "time": "2025-07-07T19:11:38-04:00",
+                  "place": {
+                    "type": "place",
+                    "location": {
+                      "lat": 42.3710223,
+                      "lng": -83.0756153
+                    },
+                    "originalLocation": {
+                      "lat": 42.371002,
+                      "lng": -83.0756011
+                    }
+                  }
+                },
+                "summary": {
+                  "duration": 72,
+                  "length": 536,
+                  "baseDuration": 72
+                },
+                "polyline": "BGsz_5wCnr8u-EsHwS8Vg8B4S0tB8GsTsE0KoL0e4IkXgF8LwC4I4NokBkIoV8G4SkD8G8GkSgMyf",
+                "spans": [
+                  {
+                    "offset": 0,
+                    "speedLimit": 11.1111116,
+                    "dynamicSpeedInfo": {
+                      "trafficSpeed": 7.5,
+                      "baseSpeed": 7.5,
+                      "turnTime": 0
+                    }
+                  }
+                ],
+                "language": "en-us",
+                "transport": {
+                  "mode": "car"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "timestamp": "2025-07-07T19:10:21.485135"
+    }
+  ]
+}

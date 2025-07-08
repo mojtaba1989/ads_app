@@ -238,8 +238,8 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         
         for i in reversed(range(self.verticalLayout_6.count())):
             self.verticalLayout_6.itemAt(i).widget().deleteLater()
-        self.Lidar.setTitle("Lidar")
-        self.lidarView = gl.GLViewWidget(self.Lidar)
+        
+        self.lidarView = gl.GLViewWidget(self.lidar_3d)
         self.lidarView.setBackgroundColor(200, 200, 200)
         self.lidarView.setObjectName("lidarView")
         self.verticalLayout_6.addWidget(self.lidarView)
@@ -256,6 +256,7 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         my_vehicle.rotate(180, 0, 0, 1)
         self.lidarView.addItem(my_vehicle)
         self.lidarView.setCameraPosition(distance=5, elevation=45, azimuth=145)
+        self.tabWidget.setCurrentIndex(0)
 
         self.cap = None
         self.total_frames = 0
@@ -280,7 +281,6 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.refreshBut.setEnabled(False)
 
         self.main_button_set_all(False)
-        
 
         # connections
         self.actionOpen.triggered.connect(self.open_dads)
