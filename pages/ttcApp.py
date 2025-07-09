@@ -2,37 +2,62 @@ import os
 import pandas as pd
 import numpy as np
 import json
-from PyQt5 import QtWidgets
 
-class TTCPlotApp(QtWidgets.QWidget):
-    def __init__(self, main_dict, plot_callback):
-        super().__init__()
-        self.setWindowTitle("TTC Plot Viewer")
-        self.resize(300, 100)
+def find_closest_lidar_timestamp(ts, keys, tolerance_ns=5e7):
+    i = np.searchsorted(keys, ts)
+    if i == 0:
+        return keys[0] if abs(keys[0] - ts) <= tolerance_ns else None
+    if i == len(keys):
+        return keys[-1] if abs(keys[-1] - ts) <= tolerance_ns else None
+    before, after = keys[i - 1], keys[i]
+    return before if abs(before - ts) <= abs(after - ts) else after
+
+
+class TTCPlotApp():
+    def __init__(self, main_dict):
         self.main_dict = main_dict
-        self.plot_callback = plot_callback
 
-        layout = QtWidgets.QVBoxLayout(self)
-        load_btn = QtWidgets.QPushButton("Load TTC Plot")
-        load_btn.clicked.connect(self.load_ttc_plot)
-        layout.addWidget(load_btn)
 
-    def load_ttc_plot(self):
-        
+    def run(self):
         base_path = os.path.join(self.main_dict['pwd'], 'csv')
-        velocity_file = os.path.join(base_path, self.main_dict['topics']['ssc_velocity'][0] + ".ssc_velocity")
-        position_file = os.path.join(base_path, self.main_dict['topics']['pos'][0] + ".pos")
-        heading_file = os.path.join(base_path, self.main_dict['topics']['heading'][0] + ".heading")
+        if not 'lidar' in self.main_dict.keys():
+            return False
+        
         lidar_file = os.path.join(self.main_dict['pwd'], self.main_dict['lidar'])
+        with open(lidar_file, 'r') as f:
+            lidar_data = json.load(f)
+            lidar_data = {int(k): v for k, v in lidar_data.items()}
+            lidar_keys = sorted(lidar_data.keys())
         
-        velocity_df = pd.read_csv(velocity_file)
-        position_df = pd.read_csv(position_file)
-        heading_df = pd.read_csv(heading_file)
+        velocity_bags = [i for i in self.main_dict['topics']['ssc_velocity']]
+        position_bags = [i for i in self.main_dict['topics']['pos']]
+        heading_bags = [i for i in self.main_dict['topics']['heading']]
+
+        common = list(set(velocity_bags) & set(position_bags) & set(heading_bags))
+        if not common:
+            return False
         
+        self.main_dict['topics'].pop('time_to_collision', None) #remove before add
+        
+        for bag in common:
+            fset = [os.path.join(base_path, bag + ext) for ext in [".ssc_velocity", ".pos", ".heading"]]
+            dfset = [pd.read_csv(f) for f in fset] 
+            ttc_df = self.calc_ttc(dfset[0], dfset[1], dfset[2], lidar_data, lidar_keys)
+            if not ttc_df is None:
+                ttc_file_path = os.path.join(base_path, bag + '.time_to_collision')
+                ttc_df.to_csv(ttc_file_path, index=None)
+                if 'time_to_collision' in self.main_dict['topics'].keys():
+                    self.main_dict['topics']['time_to_collision'].append(bag)
+                else:
+                    self.main_dict['topics']['time_to_collision'] = [bag]
+        return 'time_to_collision' in self.main_dict['topics'].keys()
+
+
+    def calc_ttc(self, velocity_df, position_df, heading_df, lidar_data, lidar_keys):
         velocity_df['time'] = velocity_df['time'].astype(np.int64)
         position_df['time'] = position_df['time'].astype(np.int64)
         heading_df['time'] = heading_df['time'].astype(np.int64)
-        
+
         # Merge ego data
         ego_df = pd.merge_asof(pd.merge_asof(
             velocity_df.sort_values('time'),
@@ -45,20 +70,6 @@ class TTCPlotApp(QtWidgets.QWidget):
         ego_df['heading_rad'] = np.deg2rad(ego_df['heading'])
         ego_df['heading_x'] = np.cos(ego_df['heading_rad'])
         ego_df['heading_y'] = np.sin(ego_df['heading_rad'])
-        
-        with open(lidar_file, 'r') as f:
-            lidar_data = json.load(f)
-            lidar_data = {int(k): v for k, v in lidar_data.items()}
-            lidar_keys = sorted(lidar_data.keys())
-
-        def find_closest_lidar_timestamp(ts, keys, tolerance_ns=5e7):
-            i = np.searchsorted(keys, ts)
-            if i == 0:
-                return keys[0] if abs(keys[0] - ts) <= tolerance_ns else None
-            if i == len(keys):
-                return keys[-1] if abs(keys[-1] - ts) <= tolerance_ns else None
-            before, after = keys[i - 1], keys[i]
-            return before if abs(before - ts) <= abs(after - ts) else after
 
         # Compute TTC
         ttc_records = []
@@ -89,22 +100,15 @@ class TTCPlotApp(QtWidgets.QWidget):
                     min_ttc = ttc
             if min_ttc < np.inf:
                 ttc_records.append((closest_ts, min_ttc))
-                        
+
         if not ttc_records:
-            QtWidgets.QMessageBox.warning(self, "No TTCs", "No TTC values found.")
-            return
+            return None
                         
         ttc_records.sort()
-        x = [rec[0] for rec in ttc_records]
-        y = [rec[1] for rec in ttc_records]
-
-        self.plot_callback(x, y, legend="TTC (s)")
-        self.close()
-
-if __name__ == '__main__':
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    window = TTCPlotApp({}, lambda x, y, legend: print(f"Plotting TTC with {len(x)} points"))
-    window.show()
-    sys.exit(app.exec_())
+        time = [rec[0] for rec in ttc_records]
+        ttc = [rec[1] for rec in ttc_records]
+        
+        df = pd.DataFrame({'time':time,
+                           'ttc':ttc})
+        return df
 
