@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import (
     QApplication, QLabel, QPushButton, QVBoxLayout,
     QHBoxLayout, QWidget, QSlider, QFileDialog, QDialog,
-    QStackedWidget, QListWidgetItem
+    QStackedWidget, QListWidgetItem, QMessageBox
 )
 from PyQt5.QtCore import Qt, QTimer, pyqtSignal
 from PyQt5.QtGui import QPixmap, QImage
@@ -38,8 +38,8 @@ from pages.bagToCsvApp import BagToCsvApp
 from pages.aboutPage import aboutPage
 from pages.lidarProcessApp import lidarProcessApp
 from pages.autoScenarioApp import AutoscenarioApp
-
-
+from pages.reportApp import report_Generator
+from pages.ttcApp import TTCPlotApp
 
 file_path = os.path.abspath(__file__)
 dir_path = os.path.dirname(file_path)
@@ -55,6 +55,23 @@ unique_verts, index_map = np.unique(verts, axis=0, return_inverse=True)
 faces = index_map.reshape(-1, 3)
 human_mesh_data = MeshData(vertexes=unique_verts, faces=faces)
 
+def show_error(message, parent=None):
+    msg = QMessageBox(parent)
+    msg.setIcon(QMessageBox.Critical)
+    msg.setWindowTitle("Error")
+    msg.setText(message)
+    msg.exec_()
+
+def dict_diff(d1, d2):
+    k1, k2 = set(d1), set(d2)
+    matched = d1==d2
+    return matched, {
+        "only_in_d1": k1 - k2,
+        "only_in_d2": k2 - k1,
+        "value_mismatches": {
+            k: (d1[k], d2[k]) for k in k1 & k2 if d1[k] != d2[k]
+        }
+    }
 
 def calculate_trip_distance(gps_dict):
     sorted_times = sorted(gps_dict.keys())
@@ -237,8 +254,8 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         
         for i in reversed(range(self.verticalLayout_6.count())):
             self.verticalLayout_6.itemAt(i).widget().deleteLater()
-        self.Lidar.setTitle("Lidar")
-        self.lidarView = gl.GLViewWidget(self.Lidar)
+        
+        self.lidarView = gl.GLViewWidget(self.lidar_3d)
         self.lidarView.setBackgroundColor(200, 200, 200)
         self.lidarView.setObjectName("lidarView")
         self.verticalLayout_6.addWidget(self.lidarView)
@@ -255,6 +272,7 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         my_vehicle.rotate(180, 0, 0, 1)
         self.lidarView.addItem(my_vehicle)
         self.lidarView.setCameraPosition(distance=5, elevation=45, azimuth=145)
+        self.tabWidget.setCurrentIndex(0)
 
         self.cap = None
         self.total_frames = 0
@@ -272,14 +290,13 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setIcon(self.beginningBut, 'begining')
         self.setIcon(self.rewindBut, 'rewind')
         self.setIcon(self.skipBut, 'forward')
-        self.setIcon(self.endBut, 'end')
+        self.setIcon(self.refreshBut, 'refresh')
         self.beginningBut.setEnabled(False)
         self.rewindBut.setEnabled(False)
         self.skipBut.setEnabled(False)
-        self.endBut.setEnabled(False)
+        self.refreshBut.setEnabled(False)
 
         self.main_button_set_all(False)
-        
 
         # connections
         self.actionOpen.triggered.connect(self.open_dads)
@@ -290,12 +307,15 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionAbout_US.triggered.connect(self.add_on_open_about)
         self.actionLidar_Clean_Up.triggered.connect(self.add_on_open_lidar_clean_up)
         self.actionScenario_Detection.triggered.connect(self.add_on_auto_scenario_detection)
+        self.actionGenerate_Report.triggered.connect(self.add_on_generate_report)
+        self.actionTTC_Tool.triggered.connect(self.add_on_add_ttc)
         self.cameraSelect.currentIndexChanged.connect(self.video_load)
         self.ROStimeBox.textChanged.connect(self.main_wallclock_update)
         self.playBut.clicked.connect(self.video_play_callback)
         self.skipBut.pressed.connect(self.video_fast_forward_pressed)
         self.skipBut.released.connect(self.video_fast_forward_released)
         self.ejectBut.clicked.connect(self.open_dads)
+        self.refreshBut.clicked.connect(self.map_refresh)
         self.scenAddB.clicked.connect(self.scenario_app_open)
         self.scenEditB.clicked.connect(self.scenario_edit)
         self.scenGoToB.clicked.connect(self.scenario_goto_callback)
@@ -585,6 +605,11 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
         js = f"setRoute({js_array});"
         QTimer.singleShot(2000, lambda: self.mapView.page().runJavaScript(js))
+        self.refreshBut.setEnabled(True)
+    
+    def map_refresh(self):
+        # self.map_generate_gps_dictionary()
+        self.map_load()
     
     def map_generate_gps_dictionary(self):
         self.gps = {}
@@ -618,7 +643,7 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
             self.main_dict['additional_scenarios'].append(add_scenario)
         time_p = datetime.datetime.fromtimestamp(float(time)/1e9).strftime('%H:%M:%S.%f')[:-3]
         id = self.scenList.count() + 1
-        self.main_dict['scenarios'][time] = (id, scenario, time_p)  # time, scenario
+        self.main_dict['scenarios'][time] = [id, scenario, time_p]  # time, scenario
         self.scenario_cleanup()
         self.scenList.clear()
         for key in self.main_dict['scenarios'].keys():
@@ -666,7 +691,7 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         time_list = list(tmp.keys())
         time_list.sort()
         for id, time in enumerate(time_list):
-            self.main_dict['scenarios'][time] = (id+1, tmp[time][1], tmp[time][2])
+            self.main_dict['scenarios'][time] = [id+1, tmp[time][1], tmp[time][2]]
 
 
 
@@ -732,6 +757,27 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
     def main_update_dict(self, new_dict):
         self.main_dict = new_dict
         self.save_dads()
+
+    def closeEvent(self, event):
+        with open(self.FILENAME, 'r') as f:
+            to_compare = json.load(f)
+        matched, diffs = dict_diff(self.main_dict, to_compare)
+
+        if matched:
+            event.accept()
+            return
+        reply = QMessageBox.question(
+            self,
+            "Exit Confirmation",
+            "You have unsaved changes. Save before exit?",
+            QMessageBox.Yes | QMessageBox.No,
+            QMessageBox.Yes
+        )
+        if reply == QMessageBox.Yes:
+            self.save_dads()
+            event.accept()
+        else:
+            event.accept()
         
     
     def load_all(self):
@@ -806,6 +852,32 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
     def add_on_auto_scenario_detection(self):
         self.auto_scena_det = AutoscenarioApp(self.main_dict, external_1=self.scenario_insert_from_app)
         self.auto_scena_det.show()
+
+    def add_on_generate_report(self):
+        report = report_Generator(self.main_dict, self.gps)
+        report.generate_report()
+    
+    def add_on_add_ttc(self):
+        ttc_app = TTCPlotApp(self.main_dict)
+        if not ttc_app.run():
+            show_error("Time To Collision calculation failed!")
+
+        reply = QMessageBox.question(
+            None,
+            "Confirm Action",
+            "Do you want to add TTC to plots window?",
+            QMessageBox.Yes | QMessageBox.No,
+            QMessageBox.Yes  # default selected button
+        )
+
+        if reply == QMessageBox.Yes:
+            last_id  = self.main_dict['plots'][-1][0]
+            self.main_dict['plots'].append([last_id+1, 'time_to_collision', 'ttc'])
+            self.plot_load()
+
+            
+
+
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)

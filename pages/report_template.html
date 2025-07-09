@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Detroit ADS Trip Report</title>
+    <!-- <button onclick="window.print()" id="print-btn">🖨️ Print Report</button> -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        h1, h2 {
+            color: #2c3e50;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: flex-start;
+        }
+
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            flex: 1 1 calc(50% - 20px);
+            box-sizing: border-box;
+            min-width: 300px;
+            max-width: 100%;
+        }
+
+        .plot {
+            max-width: 50%;
+        }
+
+        .full-width {
+            flex: 1 1 100%;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .map-box {
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 10px;
+            overflow: hidden;
+            height: 400px;
+        }
+
+        .print-note {
+            display: none;
+        }
+
+        #print-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+
+            @page {
+                margin: 20mm;
+            }
+
+            #print-btn {
+                display: none;
+            }
+
+            .container {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px;
+                justify-content: flex-start;
+            }
+
+            .section {
+                box-shadow: none;
+                border: 1px solid #000;
+                page-break-inside: avoid;
+            }
+
+            .plot {
+                transform: scale(0.5);
+                transform-origin: top left;
+                max-width: 100%;
+            }
+
+            .map-box {
+                display: none;
+                height: auto !important;
+            }
+
+            .print-note {
+                display: block;
+                margin-top: 10px;
+                font-style: italic;
+                font-size: 14px;
+                color: #666;
+            }
+
+            img {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+
+    <style>
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .info-table th, .info-table td {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        .info-table th {
+            background-color: #f2f2f2;
+            width: 40%;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Trip Analysis - Autogenegate Report</h1>
+    <!-- <p>This report demonstrates embedding text, charts, and a map using Python tools.</p> -->
+
+    <!-- Trip Info + Map -->
+    <div class="container">
+        <div class="section">
+            <h2>Trip Info</h2>
+            <table class="info-table">
+                <tbody>
+                {% for key, value in info.items() %}
+                    <tr>
+                        <th>{{ key }}</th>
+                        <td>{{ value }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>Vehicle Dynamics</h2>
+            <table class="info-table">
+                <tbody>
+                {% for key, value in vehicle_dynamics.items() %}
+                    <tr>
+                        <th>{{ key }}</th>
+                        <td>{{ value }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>        
+    </div>
+
+    <!-- Static plots -->
+    <div class="container">
+        <div class="section">
+            <h2>Driving Scenarios</h2>
+            <!-- <p>This is a pie chart showing fruit distribution.</p> -->
+            <!-- <img src="data:image/png;base64,{{ pie_data }}" alt="Pie Chart"> -->
+            <img src="{{ pie_data }}" alt="Pie Chart">
+        </div>
+
+        <div class="section">
+            <h2>Map</h2>
+            <div class="map-box">
+                {{ map_html | safe }}
+            </div>
+            <p class="print-note">🛈 Note: The interactive map is not visible in the PDF/print version.</p>
+        </div>
+    </div>
+
+    <!-- Plotly dynamic plots -->
+    <h1>Dynamic Interactive Plots</h1>
+    <div class="container">
+        {% for plot_html in plots %}
+        <div class="section plot">
+            {{ plot_html | safe }}
+        </div>
+        {% endfor %}
+    </div>
+
+</body>
+</html>
