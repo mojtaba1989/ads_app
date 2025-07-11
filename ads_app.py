@@ -9,6 +9,7 @@ import folium
 import datetime
 from geopy.distance import geodesic
 from contextlib import contextmanager
+import time
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import (
@@ -40,6 +41,11 @@ from pages.lidarProcessApp import lidarProcessApp
 from pages.autoScenarioApp import AutoscenarioApp
 from pages.reportApp import report_Generator
 from pages.ttcApp import TTCPlotApp
+
+if sys.platform == "win32":
+    os.environ['QTWEBENGINE_CHROMIUM_FLAGS'] = '--disable-gpu'
+    os.environ['QT_QUICK_BACKEND'] = 'software'
+    os.environ['QTWEBENGINE_DISABLE_SANDBOX'] = '1'
 
 file_path = os.path.abspath(__file__)
 dir_path = os.path.dirname(file_path)
@@ -240,18 +246,17 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setAttribute(QtCore.Qt.WA_QuitOnClose)
         self.setupUi(self)
         self.adjustUI()
+        QTimer.singleShot(0, self.initWebEngine)
+        QTimer.singleShot(0, self.initSTLview)
         self.sync = {}
 
-    def adjustUI(self):
+    def initWebEngine(self):
         self.mapView = QWebEngineView(self.groupBox_2)
         self.mapView.setObjectName("mapView")
         self.gridLayout_5.addWidget(self.mapView, 0, 0, 1, 1)
+        # self.mapView.setUrl(QUrl("about:blank"))
 
-        self.scrollLayout = QtWidgets.QVBoxLayout(self.plotContents)
-        self.scrollLayout.setContentsMargins(0,0,0,0)
-        self.selection_manager = SelectionManager()
-
-        
+    def initSTLview(self):
         for i in reversed(range(self.verticalLayout_6.count())):
             self.verticalLayout_6.itemAt(i).widget().deleteLater()
         
@@ -274,6 +279,11 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.lidarView.setCameraPosition(distance=5, elevation=45, azimuth=145)
         self.tabWidget.setCurrentIndex(0)
 
+    def adjustUI(self):
+        self.scrollLayout = QtWidgets.QVBoxLayout(self.plotContents)
+        self.scrollLayout.setContentsMargins(0,0,0,0)
+        self.selection_manager = SelectionManager()  
+        
         self.cap = None
         self.total_frames = 0
         self.fps = 15
