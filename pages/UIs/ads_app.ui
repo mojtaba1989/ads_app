@@ -223,6 +223,7 @@
     <addaction name="actionLidar_Clean_Up"/>
     <addaction name="actionScenario_Detection"/>
     <addaction name="actionTTC_Tool"/>
+    <addaction name="actionHere_API"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
@@ -909,6 +910,11 @@
   <action name="actionTTC_Tool">
    <property name="text">
     <string>Time To Collision Calc.</string>
+   </property>
+  </action>
+  <action name="actionHere_API">
+   <property name="text">
+    <string>Here API</string>
    </property>
   </action>
  </widget>

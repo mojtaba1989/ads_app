@@ -32,6 +32,13 @@
       map.panTo([lat, lon]);
     }
 
+    function add_marker(lat, lon, msg) {
+      const pin = L.marker([lat, lon]).addTo(map);
+      if (msg) {
+        pin.bindPopup(msg);
+      }
+    }
+
     function setRoute(coords) {
       if (route.length > 0) {
         map.removeLayer(routeLine);  // Remove previous line if needed

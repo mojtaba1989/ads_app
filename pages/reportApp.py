@@ -7,6 +7,8 @@ import folium
 import plotly.graph_objects as go
 import numpy as np
 import os
+from geopy.distance import geodesic
+import re
 
 from PyQt5.QtWidgets import QApplication, QFileDialog
 
@@ -14,12 +16,37 @@ from PyQt5.QtWidgets import QApplication, QFileDialog
 file_path = os.path.abspath(__file__)
 dir_path = os.path.dirname(file_path)
 
+def infer_road_type(speed_limit):
+    if speed_limit <= 25:
+        return "Residential/School Zone"
+    elif speed_limit <= 35:
+        return "Urban Street / Collector"
+    elif speed_limit <= 45:
+        return "Arterial / Minor Highway"
+    elif speed_limit <= 55:
+        return "Rural Highway / Major Arterial"
+    elif speed_limit <= 65:
+        return "Divided Highway / State Route"
+    elif speed_limit <= 75:
+        return "Interstate / Freeway"
+    else:
+        return "High-speed Interstate (e.g., Texas 85 mph zone)"
+    
+def extract_speed(text):
+    match = re.search(r'\bspeed limit.*?(\d+)\s*mph', text, re.IGNORECASE)
+    if match:
+        return int(match.group(1))
+    return None
+
 def get_closest(key, dict):
         try:
             return key, dict[key]
         except:
             key_n = min(dict.keys(), key=lambda x: abs(int(x) - int(key)))
             return key_n, dict[key_n]
+        
+def closest_value_and_index(lst, target):
+    return min(enumerate(lst), key=lambda x: abs(x[1] - target))
 
 folium_icon_colors = [
     'red',
@@ -81,8 +108,42 @@ class report_Generator:
                                ).add_to(self.scen_dict[key]['mrk_grp'])
             self.scen_dict[key]['mrk_grp'].add_to(self.map)
         folium.LayerControl(collapsed=False).add_to(self.map)
-
         self.map.fit_bounds(bound)
+    
+    def creat_driving_instruction_map(self):
+        route = [[lat, lon] for lat, lon in self.gps.values()]
+        center = [np.mean([P[0] for P in route]),
+                  np.mean([P[1] for P in route])]
+        self.map_DI = folium.Map(location=center, zoom_start=18)
+        folium.PolyLine(route,
+                        color="blue",
+                        weight=8,
+                        opacity=1,
+                        smooth_factor=0).add_to(self.map_DI)
+        bound = [[np.min([P[0] for P in route]), np.min([P[1] for P in route])],
+                 [np.max([P[0] for P in route]), np.max([P[1] for P in route])]]
+        
+        self.di_list = [self.main_dict['HereAPI'][key]['type'] for key in self.main_dict['HereAPI']]
+        self.di_list = np.unique(self.di_list)
+        self.di_dict = {}
+        for id, sc in enumerate(self.di_list):
+            self.di_dict[sc] = {'color': folium_icon_colors[id], 'locs': [],
+                             'mrk_grp': folium.FeatureGroup(name=sc, show=True)}
+        
+        for key in self.main_dict['HereAPI'].keys():
+
+            self.di_dict[self.main_dict['HereAPI'][key]['type']]['locs'].append(self.main_dict['HereAPI'][key]['location'])
+        
+        for key in self.di_dict.keys():
+            for loc in self.di_dict[key]['locs']:
+                folium.Marker(loc,
+                               popup=key, 
+                               icon=folium.Icon(color=self.di_dict[key]['color'])
+                               ).add_to(self.di_dict[key]['mrk_grp'])
+            self.di_dict[key]['mrk_grp'].add_to(self.map_DI)
+        folium.LayerControl(collapsed=False).add_to(self.map_DI)
+        self.map_DI.fit_bounds(bound)
+
 
     def create_plots(self):
         self.plot_list = []
@@ -128,6 +189,72 @@ class report_Generator:
 
         # HTML-safe image
         self.pie_data = f"data:image/png;base64,{encoded}"
+
+    def create_DI_piechart(self):
+        total_distance = 0
+        ros_time = [key for key in self.gps.keys()]
+        ros_time_int = [int(key) for key in self.gps.keys()]
+        ros_time.sort()
+        ros_time_int.sort()
+        distance = []
+        for i, key in enumerate(ros_time):
+            if i == 0:
+                distance.append(total_distance)
+                continue
+            Pfrom = tuple(self.gps[ros_time[i-1]])
+            Pto = tuple(self.gps[ros_time[i]])
+            total_distance += geodesic(Pfrom, Pto).mi
+            distance.append(total_distance)
+        
+        slc_dist = [0]
+        slc_value = []
+        for key in self.main_dict['HereAPI'].keys():
+            if self.main_dict['HereAPI'][key]['type']=='speed limit':
+                idx, _ = closest_value_and_index(ros_time_int, int(key))
+                slc_dist.append(distance[idx])
+                slc_value.append(self.main_dict['HereAPI'][key]['value'])
+        slc_dist.append(distance[-1])
+        slc_dist = list(np.diff(slc_dist))
+        slc_value.insert(0, slc_value[0])
+        slc_init = []
+        for i in range(len(slc_dist)):
+            slc_init.append((slc_value[i], slc_dist[i]))
+        
+        tmp = np.unique(slc_value)
+        slc_speed = []
+        for val in tmp:
+            total = 0
+            for i in range(len(slc_init)):
+                if val==slc_init[i][0]:
+                    total =+ slc_init[i][1]
+            slc_speed.append((val, total))
+
+        tmp = np.unique([infer_road_type(i) for i in slc_value])
+        slc_type = []
+        for val in tmp:
+            total = 0
+            for i in range(len(slc_init)):
+                if val==infer_road_type(slc_init[i][0]):
+                    total =+ slc_init[i][1]
+            slc_type.append((val, total))
+            
+
+        fig, axs = plt.subplots(1, 2, figsize=(10, 5))
+        axs[0].pie([i[1] for i in slc_speed], labels=[f"{i[0]} mph" for i in slc_speed], autopct='%1.1f%%', startangle=90)
+        axs[0].set_title("Speed Limit vs Travel distance")
+
+        axs[1].pie([i[1] for i in slc_type], labels=[i[0] for i in slc_type], autopct='%1.1f%%', startangle=90)
+        axs[1].set_title("Speed Limit vs Road type")
+        for ax in axs:
+            ax.axis('equal')
+        plt.tight_layout()
+
+        buf = BytesIO()
+        plt.savefig(buf, format='png', bbox_inches='tight')
+        buf.seek(0)
+        encoded = base64.b64encode(buf.read()).decode('utf-8')
+        buf.close()
+        self.pie_DI_data = f"data:image/png;base64,{encoded}"
 
     def create_vehicle_dynamics(self):
         self.vehicle_dynamics = {}
@@ -204,15 +331,19 @@ class report_Generator:
     def generate_report(self):
         self.create_html()
         self.create_map()
+        self.creat_driving_instruction_map()
         self.create_plots()
         self.create_piechart()
+        self.create_DI_piechart()
         self.create_vehicle_dynamics()
 
         html_content = Template(self.html_template).render(
             map_html=self.map._repr_html_(),
+            map_DI_html=self.map_DI._repr_html_(),
             plots = self.plot_list,
             info = self.main_dict['info'],
             pie_data = self.pie_data,
+            pie_DI_data = self.pie_DI_data,
             vehicle_dynamics = self.vehicle_dynamics
         )
 

@@ -41,6 +41,7 @@ from pages.lidarProcessApp import lidarProcessApp
 from pages.autoScenarioApp import AutoscenarioApp
 from pages.reportApp import report_Generator
 from pages.ttcApp import TTCPlotApp
+from pages.hereApiApp import HereApiApp
 
 if sys.platform == "win32":
     os.environ['QTWEBENGINE_CHROMIUM_FLAGS'] = '--disable-gpu'
@@ -319,6 +320,7 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionScenario_Detection.triggered.connect(self.add_on_auto_scenario_detection)
         self.actionGenerate_Report.triggered.connect(self.add_on_generate_report)
         self.actionTTC_Tool.triggered.connect(self.add_on_add_ttc)
+        self.actionHere_API.triggered.connect(self.add_on_Here_API)
         self.cameraSelect.currentIndexChanged.connect(self.video_load)
         self.ROStimeBox.textChanged.connect(self.main_wallclock_update)
         self.playBut.clicked.connect(self.video_play_callback)
@@ -653,6 +655,9 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
             self.main_dict['additional_scenarios'].append(add_scenario)
         time_p = datetime.datetime.fromtimestamp(float(time)/1e9).strftime('%H:%M:%S.%f')[:-3]
         id = self.scenList.count() + 1
+        if time in self.main_dict['scenarios'].keys():
+            if scenario!=self.main_dict['scenarios'][time][1]:
+                time = str(int(time)+1)
         self.main_dict['scenarios'][time] = [id, scenario, time_p]  # time, scenario
         self.scenario_cleanup()
         self.scenList.clear()
@@ -703,6 +708,29 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         for id, time in enumerate(time_list):
             self.main_dict['scenarios'][time] = [id+1, tmp[time][1], tmp[time][2]]
 
+    
+    def here_api_import(self):
+        if not 'HereAPI' in self.main_dict.keys():
+            return
+        tmp_dict = {}
+        for action in self.main_dict['HereAPI']['actions']:
+            t = find_closest_time_geopy(self.gps, action['location'][0], action['location'][1])
+            tmp = {'type': 'action',
+                        'location': action['location'],
+                        'value': action['action']}
+            while t in tmp_dict.keys():
+                t = str(int(t)+1)
+            tmp_dict[t] = tmp
+
+        for splimc in self.main_dict['HereAPI']['speed_limits']:
+            t = find_closest_time_geopy(self.gps, splimc['location'][0], splimc['location'][1])
+            tmp = {'type': 'speed limit',
+                        'location': splimc['location'],
+                        'value': splimc['speed_limit']}
+            while t in tmp_dict.keys():
+                t = str(int(t)+1)
+            tmp_dict[t] = tmp
+        self.main_dict['HereAPI'] = tmp_dict
 
 
     #### General  
@@ -884,6 +912,11 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
             last_id  = self.main_dict['plots'][-1][0]
             self.main_dict['plots'].append([last_id+1, 'time_to_collision', 'ttc'])
             self.plot_load()
+
+    def add_on_Here_API(self):
+        self.here_api = HereApiApp(self.main_dict, self.gps, 
+                                   external=self.here_api_import)
+        self.here_api.show()
 
             
 

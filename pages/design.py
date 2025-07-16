@@ -378,6 +378,8 @@ class Ui_MainWindow(object):
         self.actionGenerate_Report.setObjectName("actionGenerate_Report")
         self.actionTTC_Tool = QtWidgets.QAction(MainWindow)
         self.actionTTC_Tool.setObjectName("actionTTC_Tool")
+        self.actionHere_API = QtWidgets.QAction(MainWindow)
+        self.actionHere_API.setObjectName("actionHere_API")
         self.menuFile.addAction(self.actionOpen)
         self.menuFile.addAction(self.actionSave)
         self.menuFile.addAction(self.actionSave_As)
@@ -391,6 +393,7 @@ class Ui_MainWindow(object):
         self.menuTools.addAction(self.actionLidar_Clean_Up)
         self.menuTools.addAction(self.actionScenario_Detection)
         self.menuTools.addAction(self.actionTTC_Tool)
+        self.menuTools.addAction(self.actionHere_API)
         self.menuAbout.addAction(self.actionHelp)
         self.menuAbout.addAction(self.actionAbout_US)
         self.menubar.addAction(self.menuFile.menuAction())
@@ -454,6 +457,7 @@ class Ui_MainWindow(object):
         self.actionScenario_Detection.setText(_translate("MainWindow", "&Scenario Detection"))
         self.actionGenerate_Report.setText(_translate("MainWindow", "&Generate Report"))
         self.actionTTC_Tool.setText(_translate("MainWindow", "Time To Collision Calc."))
+        self.actionHere_API.setText(_translate("MainWindow", "Here API"))
 
 
 if __name__ == "__main__":
