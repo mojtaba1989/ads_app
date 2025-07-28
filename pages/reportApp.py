@@ -169,7 +169,7 @@ class report_Generator:
             self.plot_list.append(fig.to_html(full_html=False, include_plotlyjs='cdn'))
             
     def create_html(self):
-        with open(os.path.join(dir_path, 'report_template.html'), 'r') as f:
+        with open(os.path.join(dir_path, 'report_template.html'), 'r', encoding="utf-8") as f:
             self.html_template = f.read()
 
     def create_piechart(self):
@@ -356,7 +356,7 @@ class report_Generator:
 
         if file_path:
             print("File will be saved to:", file_path)
-            with open(file_path, 'w') as f:
+            with open(file_path, 'w', encoding="utf-8") as f:
                 f.write(html_content)
         else:
             pass
