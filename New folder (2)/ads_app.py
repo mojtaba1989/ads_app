@@ -42,6 +42,8 @@ from pages.autoScenarioApp import AutoscenarioApp
 from pages.reportApp import report_Generator
 from pages.ttcApp import TTCPlotApp
 from pages.hereApiApp import HereApiApp
+from pages.ttc360App import TTC360App
+
 
 if sys.platform == "win32":
     os.environ['QTWEBENGINE_CHROMIUM_FLAGS'] = '--disable-gpu'
@@ -280,6 +282,7 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.lidarView.setCameraPosition(distance=5, elevation=45, azimuth=145)
         self.tabWidget.setCurrentIndex(0)
 
+
     def adjustUI(self):
         self.scrollLayout = QtWidgets.QVBoxLayout(self.plotContents)
         self.scrollLayout.setContentsMargins(0,0,0,0)
@@ -516,12 +519,9 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
                 if topic in video:
                     self.sync[topic] = {}
                     for key in self.main_dict['topics'][topic]:
-                        try:
-                            data = pd.read_csv(os.path.join(self.main_dict['pwd'], 'csv', key + '.' + topic))
-                            for i in range(len(data)):
-                                self.sync[topic][int(data['seq'][i])] = int(data['time'][i])
-                        except:
-                            continue
+                        data = pd.read_csv(os.path.join(self.main_dict['pwd'], 'csv', key + '.' + topic))
+                        for i in range(len(data)):
+                            self.sync[topic][int(data['seq'][i])] = int(data['time'][i])
 
     def video_play_callback(self):
             if self.playing:
@@ -545,6 +545,17 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
             else:
                 self.timer.stop()
                 self.cap.release()
+        
+        if hasattr(self, 'ttc360_widget') and self.ttc360_widget.ttc_frames:
+            try:
+                ts = self.sync['current'][current_pos]
+                self.ttc360_widget.update_plot_at_timestamp(ts)
+            except KeyError:
+                pass
+            # except Exception as e:
+            #     print("TTC update skipped:", e)
+
+
     
     def video_display(self, frame):
         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -630,12 +641,9 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.gps = {}
         for file in self.main_dict['topics']['pos']:
             file_path = os.path.join(self.main_dict['pwd'], 'csv', file + '.pos')
-            try:
-                data = pd.read_csv(file_path)
-                for i in range(len(data)):
-                    self.gps[int(data['time'][i])] = [float(data['lat'][i]), float(data['lon'][i])]
-            except:
-                continue
+            data = pd.read_csv(file_path)
+            for i in range(len(data)):
+                self.gps[int(data['time'][i])] = [float(data['lat'][i]), float(data['lon'][i])]
 
 
     # Scenario Control
@@ -657,11 +665,7 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.scenario_app.show()
 
     def scenario_insert_from_app(self, time, scenario, add_scenario=None):
-        if 'additional_scenarios' not in self.main_dict.keys():
-            self.main_dict['additional_scenarios'] = []
-        if 'scenarios' not in self.main_dict.keys():
-            self.main_dict['scenarios'] = {}
-        if add_scenario is not None and add_scenario not in self.main_dict.get('additional_scenarios', []):
+        if add_scenario is not None and add_scenario not in self.main_dict['additional_scenarios']:
             self.main_dict['additional_scenarios'].append(add_scenario)
         time_p = datetime.datetime.fromtimestamp(float(time)/1e9).strftime('%H:%M:%S.%f')[:-3]
         id = self.scenList.count() + 1
@@ -783,7 +787,6 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
             self.NOW = -1
 
     def main_load_info(self):
-        self.infoL.clear()
         self.main_extract_info()
         for key in self.main_dict['info'].keys():
             description = self.main_dict['info'][key]
@@ -849,12 +852,10 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         
     def open_dads(self):
         self.main_refresh()
-
         file_dialog = QFileDialog()
         file_path, _ = file_dialog.getOpenFileName(caption="Open DADS File", filter="Trip Files (*.DADS)")
         if file_path == "":
             return
-
         dir_name = os.path.dirname(file_path)
         self.FILENAME = file_path
         self.main_dict = {}
@@ -864,6 +865,15 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         if 'scenarios' not in self.main_dict.keys():
             self.main_dict['scenarios'] = {}
         self.load_all()
+        
+        if not hasattr(self, 'ttc360_widget'):
+            self.ttc360_widget = TTC360App(self.main_dict, from_saved=True)
+            for i in reversed(range(self.verticalLayout_8.count())):
+                widget_to_remove = self.verticalLayout_8.itemAt(i).widget()
+                if widget_to_remove:
+                    widget_to_remove.setParent(None)
+            self.verticalLayout_8.addWidget(self.ttc360_widget)
+            
         self.main_button_set_all(True)
 
     def save_dads(self):
@@ -881,10 +891,8 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
     
     # Extra Tools
     def add_on_open_dads_wizard(self):
-        tmp_path = None
-        self.wizard_window = WizardApp(tmp_path)
+        self.wizard_window = WizardApp()
         self.wizard_window.show()
-        print(tmp_path)
 
     def add_on_open_bag_to_csv(self):
         self.to_csv_window = BagToCsvApp()
@@ -901,7 +909,7 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
     def add_on_open_lidar_clean_up(self):
         self.lidar_window = lidarProcessApp(self.main_update_dict)
         self.lidar_window.show()
-        
+
     def add_on_auto_scenario_detection(self):
         self.auto_scena_det = AutoscenarioApp(self.main_dict, external_1=self.scenario_insert_from_app)
         self.auto_scena_det.show()

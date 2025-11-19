@@ -44,8 +44,11 @@ class AutoscenarioApp(QtWidgets.QWidget, Ui_Wiz_1):
     def data_prep(self):
         self.ssc_velocity = pd.DataFrame()
         for csv_file in self.dict['topics']['ssc_velocity']:
-            csv_file = os.path.join(self.dict['pwd'], 'csv', csv_file + '.' + "ssc_velocity")
-            self.ssc_velocity = pd.concat((self.ssc_velocity, pd.read_csv(csv_file, index_col=None)))
+            try:
+                csv_file = os.path.join(self.dict['pwd'], 'csv', csv_file + '.' + "ssc_velocity")
+                self.ssc_velocity = pd.concat((self.ssc_velocity, pd.read_csv(csv_file, index_col=None)))
+            except:
+                continue
         
         self.steering_feedback = pd.DataFrame()
         for csv_file in self.dict['topics']['steering_feedback']:

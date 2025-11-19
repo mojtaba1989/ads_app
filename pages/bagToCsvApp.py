@@ -19,7 +19,10 @@ from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtCore import QObject, pyqtSlot, QUrl
 
-from pages.bag_to_csv import Ui_Form
+try:
+    from pages.bag_to_csv import Ui_Form
+except:
+    from bag_to_csv import Ui_Form
 
 
 

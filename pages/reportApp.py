@@ -177,7 +177,7 @@ class report_Generator:
         sizes = [len(self.scen_dict[key]['locs']) for key in self.scen_dict.keys()]
         labels = [key for key in self.scen_dict.keys()]
         colors = [self.scen_dict[key]['color'] for key in self.scen_dict.keys()]
-        ax.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=90)
+        ax.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=90, textprops={'fontsize': 16})
         ax.axis('equal') 
 
         # Save to base64 string
@@ -214,7 +214,7 @@ class report_Generator:
                 slc_dist.append(distance[idx])
                 slc_value.append(self.main_dict['HereAPI'][key]['value'])
         slc_dist.append(distance[-1])
-        slc_dist = list(np.diff(slc_dist))
+        slc_dist = [abs(i) for i in np.diff(slc_dist)]
         slc_value.insert(0, slc_value[0])
         slc_init = []
         for i in range(len(slc_dist)):
@@ -226,7 +226,7 @@ class report_Generator:
             total = 0
             for i in range(len(slc_init)):
                 if val==slc_init[i][0]:
-                    total =+ slc_init[i][1]
+                    total += slc_init[i][1]
             slc_speed.append((val, total))
 
         tmp = np.unique([infer_road_type(i) for i in slc_value])
@@ -235,16 +235,19 @@ class report_Generator:
             total = 0
             for i in range(len(slc_init)):
                 if val==infer_road_type(slc_init[i][0]):
-                    total =+ slc_init[i][1]
+                    total += slc_init[i][1]
             slc_type.append((val, total))
             
 
         fig, axs = plt.subplots(1, 2, figsize=(10, 5))
-        axs[0].pie([i[1] for i in slc_speed], labels=[f"{i[0]} mph" for i in slc_speed], autopct='%1.1f%%', startangle=90)
+        axs[0].pie([i[1] for i in slc_speed], labels=[f"{i[0]} mph" for i in slc_speed], autopct='%1.1f%%', startangle=90, textprops={'fontsize': 16})
         axs[0].set_title("Speed Limit vs Travel distance")
-
-        axs[1].pie([i[1] for i in slc_type], labels=[i[0] for i in slc_type], autopct='%1.1f%%', startangle=90)
+        
+        axs[1].pie([i[1] for i in slc_type], labels=[i[0] for i in slc_type], autopct='%1.1f%%', startangle=90, textprops={'fontsize': 16})
         axs[1].set_title("Speed Limit vs Road type")
+
+
+
         for ax in axs:
             ax.axis('equal')
         plt.tight_layout()

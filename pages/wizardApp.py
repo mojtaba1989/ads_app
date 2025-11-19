@@ -228,10 +228,11 @@ class Page3(QtWidgets.QWidget, Ui_Wiz_3):
 
     
 class Page4(QtWidgets.QWidget, Ui_Wiz_4):
-    def __init__(self, stacked_widget):
+    def __init__(self, stacked_widget, save_path):
         super(Page4, self).__init__()
         self.setupUi(self)
         self.stacked_widget = stacked_widget
+        self.save_path = save_path
 
     def init_ui(self):
         self.previousB.clicked.connect(self.go_back)
@@ -259,6 +260,7 @@ class Page4(QtWidgets.QWidget, Ui_Wiz_4):
                 file_path += '.DADS'
             with open(file_path, 'w') as f:
                 json.dump(self.main_dict, f, indent=4)
+            self.save_path=file_path
             self.close()
 
 
@@ -319,7 +321,7 @@ class Page4(QtWidgets.QWidget, Ui_Wiz_4):
     
 
 class WizardApp(QWidget):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, save_path=None):
         super(WizardApp, self).__init__()
         self.setWindowTitle("DADS Creator Wizard")
         self.resize(530, 350)
@@ -328,7 +330,7 @@ class WizardApp(QWidget):
         self.page1 = Page1(self.stacked)
         self.page2 = Page2(self.stacked)
         self.page3 = Page3(self.stacked)
-        self.page4 = Page4(self.stacked)
+        self.page4 = Page4(self.stacked, save_path)
 
         self.page1.init_ui()
         self.page2.init_ui()
